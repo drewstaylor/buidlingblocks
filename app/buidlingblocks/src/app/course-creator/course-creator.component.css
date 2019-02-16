@@ -1,0 +1,53 @@
+.add,
+.remove,
+input,
+textarea {
+    cursor: pointer;
+}
+
+.add,
+.remove {
+    font-size: 22px;
+    text-align: center;
+    padding: 0.75em;
+}
+
+.controls {
+    margin: auto;
+}
+
+div.inner-controls {
+    margin: auto;
+}
+
+input:not(.file), 
+textarea {
+    padding: 0.5em;
+    margin: auto;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 90%;
+    border: 3px solid #d3d3d3;
+    border-radius: 4px;
+}
+
+input.file {
+    margin: auto;
+    width: 90%;
+    border: 3px solid #d3d3d3;
+    border-radius: 4px;
+}
+
+.content-wrapper {
+    width: 100%;
+}
+
+p {
+    display: inline;
+    margin: auto;
+}
+
+button {
+    margin: auto;
+    width: 90%;
+}

@@ -1,3 +1,56 @@
-<p>
-  course-creator works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="content-wrapper">
+      <form
+        name="course_form"
+        (ngSubmit)="submitCourse();"
+      >
+        <div class="row step-label">
+          <p>
+            <strong>Add one or more lesson steps to your course:</strong>
+          </p>
+        </div>
+        <div class="row" *ngFor="let step of courseContent.steps; index as i;">
+          <input
+            [(ngModel)]="courseContent.steps[i].title"
+            type="text"
+            name="step-title-{{i}}"
+            class="form-control" 
+            placeholder="Lesson title"
+            required
+          >
+          <textarea
+            [(ngModel)]="courseContent.steps[i].body"
+            maxlength="1000"
+            name="step-body-{{i}}"
+            placeholder="My awesome course lesson plan..."
+          >
+          </textarea>
+        </div>
+        <div class="row controls">
+          <div class="inner-controls">
+            <span class="add add-step" (click)="addStep();">+</span>
+            <span class="remove remove-step" (click)="removeStep();">-</span>
+          </div>
+        </div>
+        <div class="row file-label">
+          <p>
+            <strong>Add one or more course exams to your lesson:</strong>
+          </p>
+        </div>
+        <div class="row files" *ngFor="let file of courseContent.exams; index as i;">
+          <input class="file" type="file" name="exam-file-{{i}}">
+        </div>
+        <div class="row controls">
+          <div class="inner-controls">
+            <span class="add add-file" (click)="addFile();">+</span>
+            <span class="remove remove-file" (click)="removeFile();">-</span>
+          </div>
+        </div>
+        <div class="row">
+          <button type="submit" class="btn btn-primary">Create New Course!</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
