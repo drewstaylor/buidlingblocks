@@ -1,0 +1,90 @@
+<html>
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fortmatic@latest/dist/fortmatic.js"></script>
+	<script src="https://assist.blocknative.com/0-3-0/assist.js"></script>
+	<script type="text/javascript">
+
+		/**
+		 * Initialize BlockNative. Currently a noop / placeholder, see comments below.
+		 */
+		const initBlockNative = function(bnApiKey) {
+			return null;
+
+			/*
+			 * BNC onboarding doesn't tolerate several things in our case:
+			 *
+			 * 1) chromium (as opposed to chrome)
+			 * 2) fortmatic (insists on MetaMask)
+			 * 3) throws NPE while trying to access "document.body" when code run from <HEAD>
+			 *
+			const bncAssistConfig = {
+				dappId: bnApiKey,
+				networkId: 4, // 1: mainnet, 3: ropsten, 4: rinkeby
+				web3: web3,
+				mobileBlocked: false,
+				headlessMode: true,
+
+			};
+
+			let assistInstance = assist.init(bncAssistConfig);
+
+			assistInstance.onboard()
+				.then(function(success) {
+					console.log("onboard success");
+					console.log(success);
+				})
+				.catch(function(error) {
+					console.log("onboard error");
+					console.log(error);
+				});
+
+			return assistInstance;
+			*/
+		};
+
+		/**
+		 * Initialize web3 with Fortmatic as provider.
+		 *
+		 * 
+		 *
+		 * Returns the web3 instance.
+		 */
+		const initWeb3 = function(fmApiKey) {
+			const fm = new Fortmatic(fmApiKey);
+			web3 = new Web3(fm.getProvider());
+
+			web3.eth.getAccounts((error, accounts) => {
+				if (error) {
+					console.log(error);
+				}
+				console.log(accounts);
+
+				/*
+				 * Notice that we set from to 0x0. Fortmatic will replace this with the appropriate address.
+				 *
+				web3.eth.sendTransaction({
+					// From address will automatically be replaced by the address of current user
+					from: '0x0000000000000000000000000000000000000000',
+					to: "FIXME",
+					value: web3.utils.toWei("1", 'milliether')
+				});
+				*/
+			});
+
+			return web3;
+		};
+
+		window.onload = function() {
+
+			const FM_API_KEY_RINKEBY = "";
+			const BN_API_KEY_RINKEBY = "";
+
+			const bn = initBlockNative(BN_API_KEY_RINKEBY);
+			const web3 = initWeb3(FM_API_KEY_RINKEBY);
+		};
+
+	</script>
+	<title>Fortmatic test</title>
+	<body></body>
+</html>
+
