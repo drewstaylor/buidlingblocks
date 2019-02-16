@@ -24,14 +24,22 @@ export class AuthService {
 		this.initWeb3();
 	}
 
-	public login(): boolean {
+	/**
+	 * Logs a user in if neccesary, otherwise just logs their wallet address
+	 * @param redirect {Boolean}: If set to true, user will be redirected to /choose-your-own-adventure
+	 */
+	public login(redirect): void {
+		if (!redirect || typeof redirect === "undefined") {
+			redirect = false;
+		}
 		try {
 			let attempt = this.fortmatic.user.login().then(() => {
 				let accounts = this.web3.eth.getAccounts().then(console.log);
-				this.router.navigate(['/choose-your-own-adventure']);
+				if (redirect)
+					this.router.navigate(['/choose-your-own-adventure']);
 			});
 		} catch (err) {
-			return false;
+			console.log('error authenticating user', err);
 		}
 	}
 

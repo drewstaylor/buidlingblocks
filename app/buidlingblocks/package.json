@@ -22,6 +22,7 @@
     "@angular/router": "^6.0.0",
     "core-js": "^2.5.4",
     "fortmatic": "^0.3.2",
+    "ipfs-api": "^26.1.2",
     "rxjs": "~6.3.3",
     "web3": "^0.20.7",
     "zone.js": "^0.8.26"
