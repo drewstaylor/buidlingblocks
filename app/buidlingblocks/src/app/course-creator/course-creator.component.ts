@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContractService } from '../services/contract.service';
 
 @Component({
   selector: 'app-course-creator',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseCreatorComponent implements OnInit {
 
-  constructor() { }
+  constructor(private contractService: ContractService) {
+    // Connect to contract
+    this.contractService.bootstrap();
+  }
 
   ngOnInit() {
   }

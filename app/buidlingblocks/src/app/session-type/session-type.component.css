@@ -3,6 +3,12 @@ h1 {
     text-align: center;
 }
 
+h1 {
+    display: inline;
+    margin: auto;
+    padding: 0.5em;
+}
+
 img {
     margin: auto;
 }
