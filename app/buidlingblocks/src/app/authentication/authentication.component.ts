@@ -37,7 +37,7 @@ export class AuthenticationComponent implements OnInit {
 
   private login(): void {
     console.log("Attempting user login...");
-    this.authService.login();
+    this.authService.login(true);
     this.isLoading = false;
   }
 

@@ -15,7 +15,7 @@ export class CourseCreatorComponent implements OnInit {
     private contractService: ContractService,
     private ipfsService: IpfsService
   ) {
-    this.authService.login();
+    this.authService.login(false);
   }
 
   ngOnInit() {
