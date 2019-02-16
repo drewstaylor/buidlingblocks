@@ -11,6 +11,7 @@ export class ContractService {
   public Contract;
   public web3 = null;
   public web3Enabled: boolean;
+  private initialized: boolean = false;
 
   // Blockchain instance parameters
   private bbContractAddress: string = '0xb95955c36155533B94B14A0EF29F257a9C5d9089';
@@ -27,6 +28,10 @@ export class ContractService {
   };
 
   bootstrap(): void {
+    if (this.initialized) {
+      return;
+    }
+
     // Get contract
     let that = this;
     var data = {
@@ -52,9 +57,7 @@ export class ContractService {
     this.bbContractInstance.options.from = window.userAccount;
     console.log('BB Contract Instance =>', this.bbContractInstance);
 
-    this.listCourses();
-    this.listTeachers();
-    this.listStudents();
+    this.Initialize = true;
   };
 
   /**
