@@ -57,7 +57,7 @@ export class ContractService {
     this.bbContractInstance.options.from = window.userAccount;
     console.log('BB Contract Instance =>', this.bbContractInstance);
 
-    this.Initialize = true;
+    this.initialized = true;
   };
 
   /**
