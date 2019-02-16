@@ -16,8 +16,20 @@ textarea {
     margin: auto;
 }
 
-div.inner-controls {
+.row.exams.files {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    line-height: 22px;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+    width: 90%;
+}
+
+div.inner-controls,
+span {
     margin: auto;
+    text-align: center;
 }
 
 input:not(.file), 
@@ -36,6 +48,15 @@ input.file {
     width: 90%;
     border: 3px solid #d3d3d3;
     border-radius: 4px;
+}
+
+input.questions-total {
+    max-width: 45px;
+    margin-left: 0.5em;
+}
+
+.col-sm.label {
+    padding: 0;
 }
 
 .content-wrapper {
