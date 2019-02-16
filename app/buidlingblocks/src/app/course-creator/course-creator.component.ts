@@ -19,7 +19,7 @@ export class CourseCreatorComponent implements OnInit {
 
   public courseContent = {
     steps: [
-      {title: null, body: null}
+      {title: null, body: null, file: null}
     ],
     exams: [
       {file: null, totalQuestions: null}
@@ -60,19 +60,32 @@ export class CourseCreatorComponent implements OnInit {
     this.courseContent.exams.pop();
   }
 
+  fileChangedCourseAsset(e, index) {
+    console.log('fileChanged', [e,index]);
+    const file = e.target.files[0];
+    let reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => this.convertToBuffer(reader, index, 0);
+  }
+
   fileChanged(e, index) {
     console.log('fileChanged', [e,index]);
     const file = e.target.files[0];
     let reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
-    reader.onloadend = () => this.convertToBuffer(reader, index);
+    reader.onloadend = () => this.convertToBuffer(reader, index, 1);
   }
 
-  convertToBuffer = async(reader, index) => {
+  convertToBuffer = async(reader, index, context) => {
     const buffer = await Buffer.from(reader.result);
     await this.ipfsService.ipfs.add(buffer, (err, ipfsHash) => {
       console.log('ipfsHash =>', ipfsHash);
-      this.courseContent.exams[index].file = ipfsHash;
+      if (context === 1) 
+        this.courseContent.exams[index].file = ipfsHash;
+      else if (context === 0)
+        this.courseContent.steps[index].file = ipfsHash;
+      // Debug
+      console.log('courseContent =>', this.courseContent);
     });
   };
 

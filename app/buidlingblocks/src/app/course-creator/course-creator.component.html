@@ -26,6 +26,12 @@
             placeholder="My awesome course lesson plan..."
           >
           </textarea>
+          <input 
+            class="file" 
+            type="file" 
+            name="step-file-{{i}}" 
+            (change)="fileChangedCourseAsset($event,i)"
+          >
         </div>
         <div class="row controls">
           <div class="inner-controls">
@@ -35,7 +41,7 @@
         </div>
         <div class="row file-label">
           <h3>
-            <strong>Add one or more course exams to your lesson:</strong>
+            <strong>Add a course exams to your lesson:</strong>
           </h3>
         </div>
         <div class="col-sm exams files file" *ngFor="let exam of courseContent.exams; index as i;">
