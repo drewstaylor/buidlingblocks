@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
-declare let require: any;
+declare let window: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class IpfsService {
 
-  public IPFS = require('ipfs-http-client');
   public ipfs: any;
 
   constructor() {
@@ -15,7 +14,7 @@ export class IpfsService {
   }
 
   public bootstrap(): void {
-    this.ipfs = new this.IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
-    console.log('this.ipfs =>', this.ipfs);
+    this.ipfs = new window.IpfsHttpClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+    //console.log('this.ipfs =>', this.ipfs);
   }
 }

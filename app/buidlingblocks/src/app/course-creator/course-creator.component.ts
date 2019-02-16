@@ -22,6 +22,7 @@ export class CourseCreatorComponent implements OnInit {
     // Connect to contract
     this.contractService.bootstrap();
     this.ipfsService.bootstrap();
+    console.log('ipfs =>', this.ipfsService.ipfs);
   }
 
 }
