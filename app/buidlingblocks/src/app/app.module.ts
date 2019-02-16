@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { EntryComponent } from './entry/entry.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { SessionTypeComponent } from './session-type/session-type.component';
+import { TeacherDashboardComponent } from './teacher-dashboard/teacher-dashboard.component';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EntryComponent,
     AuthenticationComponent,
-    SessionTypeComponent
+    SessionTypeComponent,
+    TeacherDashboardComponent,
+    StudentDashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -4,11 +4,15 @@ import { NgModule } from '@angular/core';
 import { EntryComponent } from './entry/entry.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { SessionTypeComponent } from './session-type/session-type.component';
+import { TeacherDashboardComponent } from './teacher-dashboard/teacher-dashboard.component';
+import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 
 const routes: Routes = [
     {path: '', component: EntryComponent},
     {path: 'login', component: AuthenticationComponent},
-    {path: 'choose-your-own-adventure', component: SessionTypeComponent}
+    {path: 'choose-your-own-adventure', component: SessionTypeComponent},
+    {path: 'teacher/dashboard', component: TeacherDashboardComponent},
+    {path: 'student/dashboard', component: StudentDashboardComponent}
 ];
 
 @NgModule({

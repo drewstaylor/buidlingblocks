@@ -7,6 +7,6 @@ img {
     margin: auto;
 }
 
-.img-wrapper {
-    width: 100%;
+a {
+    cursor: pointer;
 }
