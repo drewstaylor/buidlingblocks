@@ -3,7 +3,7 @@ import { NgForm, FormsModule }   from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
-import {Buffer} from 'buffer';
+import { Buffer } from 'buffer';
 
 declare let window: any;
 
@@ -63,16 +63,16 @@ export class CourseCreatorComponent implements OnInit {
   fileChangedCourseAsset(e, index) {
     console.log('fileChanged', [e,index]);
     const file = e.target.files[0];
-    let reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
+    let reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
     reader.onloadend = () => this.convertToBuffer(reader, index, 0);
   }
 
   fileChanged(e, index) {
     console.log('fileChanged', [e,index]);
     const file = e.target.files[0];
-    let reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
+    let reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
     reader.onloadend = () => this.convertToBuffer(reader, index, 1);
   }
 
