@@ -21,6 +21,7 @@ export class CourseCreatorComponent implements OnInit {
   ngOnInit() {
     // Connect to contract
     this.contractService.bootstrap();
+    this.ipfsService.bootstrap();
   }
 
 }

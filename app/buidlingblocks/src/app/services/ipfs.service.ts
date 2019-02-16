@@ -7,10 +7,11 @@ declare let require: any;
 })
 export class IpfsService {
 
-  public IPFS = require('ipfs-api');
+  public IPFS = require('ipfs-http-client');
   public ipfs: any;
 
   constructor() {
+    // ...
   }
 
   public bootstrap(): void {
