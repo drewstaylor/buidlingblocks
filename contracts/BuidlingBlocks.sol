@@ -19,7 +19,6 @@ contract BuidlingBlockInterface{
     }
 
 
-
 }
 
 contract BuidlingBlocks is BuidlingBlockInterface {
@@ -66,21 +65,12 @@ contract Course is BuidlingBlockInterface{
 
     }
 
-    struct question {
-        string questionText;
-        bytes32 answer;
-        string[] options;
-    }
-
     struct Test {
-        question[] questions;
-        TestScore[] testScores;
-        mapping(address => uint) testLocator;
-    }
-
-    struct TestScore {
-        address student;
-        uint score;
+        string[] questions;
+        bytes32[] answers;
+        string[][] options;
+        mapping(address => uint) testScores;
+        address[] testTakers;
     }
 
 
@@ -90,22 +80,41 @@ contract Course is BuidlingBlockInterface{
     }
         //teachers
 
-    function addStep(bytes32 textHash, bytes32 imageHash, string[] memory questionTexts, bytes32[] memory answers, string[][] memory options) public {
-
+    function addStep(bytes32 textHash, bytes32 imageHash) public {
+        uint stepIndex = steps.length;
+        steps[stepIndex].textHash = textHash;
+        steps[stepIndex].imageHash = imageHash;
     }
 
+    function addSteps(bytes32[] memory textHashes, bytes32[] memory imageHashes) public {
+        require(textHashes.length==imageHashes.length);
+        for (uint i=0;i<imageHashes.length;i++){
+            addStep(textHashes[i],imageHashes[i]);
+        }
+    }
+
+    function addTest(string[] memory questionTexts, bytes32[] memory answers, string[][] memory options) public{
+        uint testIndex = tests.length;
+        tests[testIndex].questions = questionTexts;
+        tests[testIndex].answers = answers;
+        tests[testIndex].options = options;
+    }
+    
     function addQuestion(uint stepNumber, string memory questionText) internal {
 
     }
 
-    function getStudenTestScore(uint testID, address student) public view returns(uint testScore){
-        uint testIndex = tests[testID].testLocator[student];
-        return tests[testID].testScores[testIndex].score;
+    function getStudentTestScore(uint testID, address student) public view returns(uint testScore){
+        return tests[testID].testScores[student];
     }
 
-    function getAllTestScores(uint testID) public view returns(TestScore[] memory testScores){
-
-                return tests[testID].testScores;
+    function getAllTestScores(uint testID) public view returns(uint[] memory testScores){
+        uint[] memory allTestScores;
+        for(uint i=0; i<tests[testID].testTakers.length;i++){
+            address testTaker = tests[testID].testTakers[i];
+            allTestScores[i] = tests[testID].testScores[testTaker];
+        }
+        return allTestScores;
     }
 
     //students
@@ -114,8 +123,8 @@ contract Course is BuidlingBlockInterface{
     }
 
     function getTestScore(uint testID) public view returns (uint){
-        uint testIndex = tests[testID].testLocator[msg.sender];
-        return tests[testID].testScores[testIndex].score;
+
+        return tests[testID].testScores[msg.sender];
     }
 
 }
