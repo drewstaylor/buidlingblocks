@@ -15,6 +15,7 @@ export class ContractService {
   // Blockchain instance parameters
   private contractAddress: string = '0xeFf3764E3fb9BF6Ee2c0af9b1cbccbd07f064B5b';
   private launchCourseContractAddress: string = '0x18128d6B244fB471D21FD0c298A13Da5668178e1';
+  private contract_instance;
   public network: string = "rinkeby";
   public rpcEndpoint: string = "https://rinkeby.infura.io/";
 
@@ -45,16 +46,8 @@ export class ContractService {
       return;
     }
 
-    // Create a new Web3 instance
-    this.web3 = new Web3(
-        (window.web3 && window.web3.currentProvider) ||
-        new Web3.providers.HttpProvider(this.Contract.endpoint));
-
     // Create the contract interface using the ABI provided in the configuration.
-    var contract_interface = this.web3.eth.contract(this.Contract.abi);
-
-    // Create the contract instance for the specific address provided in the configuration.
-    this.instance = contract_interface.at(this.Contract.address);
-    console.log('Contract Instance =>', this.instance);
+    this.contract_instance = new window.web3.eth.Contract(this.Contract.abi, this.Contract.address);
+    console.log('Contract Instance =>', this.contract_instance);
   };
 }

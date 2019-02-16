@@ -8,6 +8,7 @@ const FM_API_KEY_RINKEBY = "pk_test_1053F6E4E00EB469";
 // tell typescript to be more tolerant of Web3
 // note that we also include this in index.html
 declare let Web3: any;
+declare let window: any;
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AuthService {
 	public login(): boolean {
 		try {
 			let attempt = this.fortmatic.user.login().then(() => {
-				this.web3.eth.getAccounts().then(console.log);
+				let accounts = this.web3.eth.getAccounts().then(console.log);
 				this.router.navigate(['/choose-your-own-adventure']);
 			});
 		} catch (err) {
@@ -50,5 +51,6 @@ export class AuthService {
 	private initWeb3() {
 		this.fortmatic = new Fortmatic(this.fmApiKey);
 		this.web3 = new Web3(this.fortmatic.getProvider());
+		window.web3 = this.web3;
 	}
 }
