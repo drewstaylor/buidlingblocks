@@ -14,17 +14,23 @@ declare let Web3: any;
 export class AuthService {
 
 	private fmApiKey: string = null;
-	private fortmatic = null;
-	private web3 = null;
+	public fortmatic = null;
+	public web3 = null;
 
 	constructor() {
 		this.fmApiKey = FM_API_KEY_RINKEBY;
-
 		this.initWeb3();
 	}
 
-	public getWeb3() { return this.web3; };
-	public getFortmatic() { return this.fortmatic; };
+	public login() {
+		this.fortmatic.user.login().then(() => {
+			this.web3.eth.getAccounts().then(console.log);
+		});
+	}
+
+	public logout() {
+		this.fortmatic.user.logout();
+	}
 
 	/**
 	 * Initialize web3 with Fortmatic as provider.
@@ -32,23 +38,5 @@ export class AuthService {
 	private initWeb3() {
 		this.fortmatic = new Fortmatic(this.fmApiKey);
 		this.web3 = new Web3(this.fortmatic.getProvider());
-
-		this.web3.eth.getAccounts((error, accounts) => {
-			if (error) {
-				console.log(error);
-			}
-			console.log(accounts);
-
-			/*
-			 * Notice that we set from to 0x0. Fortmatic will replace this with the appropriate address.
-			 *
-			web3.eth.sendTransaction({
-				// From address will automatically be replaced by the address of current user
-				from: '0x0000000000000000000000000000000000000000',
-				to: "FIXME",
-				value: web3.utils.toWei("1", 'milliether')
-			});
-			*/
-		});
 	}
 }
