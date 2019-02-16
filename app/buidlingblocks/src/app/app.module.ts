@@ -4,11 +4,15 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { EntryComponent } from './entry/entry.component';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { SessionTypeComponent } from './session-type/session-type.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EntryComponent
+    EntryComponent,
+    AuthenticationComponent,
+    SessionTypeComponent
   ],
   imports: [
     BrowserModule,
