@@ -34,9 +34,12 @@ export class AuthService {
 		}
 		try {
 			let attempt = this.fortmatic.user.login().then(() => {
-				let accounts = this.web3.eth.getAccounts().then(console.log);
-				if (redirect)
-					this.router.navigate(['/choose-your-own-adventure']);
+				this.web3.eth.getAccounts().then((accounts) => {
+					window.userAccount = accounts[0]; // TODO: review
+					console.log("!!!! setting window.userAccount: "+ window.userAccount);
+					if (redirect)
+						this.router.navigate(['/choose-your-own-adventure']);
+				});
 			});
 		} catch (err) {
 			console.log('error authenticating user', err);
@@ -46,6 +49,7 @@ export class AuthService {
 	public logout(): boolean {
 		try {
 			this.fortmatic.user.logout();
+			window.userAccount = null; // TODO: review
 			return true;
 		} catch (err) {
 			console.log('Error logging our user with fortmatic', err);
