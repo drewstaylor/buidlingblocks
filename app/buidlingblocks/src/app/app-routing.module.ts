@@ -18,6 +18,7 @@ import { StudentTakingCourseComponent } from './student-taking-course/student-ta
 const routes: Routes = [
     {path: '', component: EntryComponent},
     {path: 'login', component: AuthenticationComponent},
+    {path: 'logout', component: AuthenticationComponent},
     {path: 'choose-your-own-adventure', component: SessionTypeComponent},
     // Teacher Routes
     {path: 'teacher/dashboard', component: TeacherDashboardComponent},

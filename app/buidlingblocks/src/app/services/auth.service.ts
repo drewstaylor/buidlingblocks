@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import Web3 from "web3";
 import Fortmatic from 'fortmatic';
 
@@ -17,19 +18,30 @@ export class AuthService {
 	public fortmatic = null;
 	public web3 = null;
 
-	constructor() {
+	constructor(private router: Router) {
 		this.fmApiKey = FM_API_KEY_RINKEBY;
 		this.initWeb3();
 	}
 
-	public login() {
-		this.fortmatic.user.login().then(() => {
-			this.web3.eth.getAccounts().then(console.log);
-		});
+	public login(): boolean {
+		try {
+			let attempt = this.fortmatic.user.login().then(() => {
+				this.web3.eth.getAccounts().then(console.log);
+				this.router.navigate(['/choose-your-own-adventure']);
+			});
+		} catch (err) {
+			return false;
+		}
 	}
 
-	public logout() {
-		this.fortmatic.user.logout();
+	public logout(): boolean {
+		try {
+			this.fortmatic.user.logout();
+			return true;
+		} catch (err) {
+			console.log('Error logging our user with fortmatic', err);
+			return false;
+		}
 	}
 
 	/**
