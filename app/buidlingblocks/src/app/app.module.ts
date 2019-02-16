@@ -12,6 +12,8 @@ import { CourseCreatorComponent } from './course-creator/course-creator.componen
 import { MyCoursesComponent } from './my-courses/my-courses.component';
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { StudentTakingCourseComponent } from './student-taking-course/student-taking-course.component';
+import { CoursesListComponent } from './courses-list/courses-list.component';
+import { TeacherViewCourseDataComponent } from './teacher-view-course-data/teacher-view-course-data.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { StudentTakingCourseComponent } from './student-taking-course/student-ta
     CourseCreatorComponent,
     MyCoursesComponent,
     StudentCoursesComponent,
-    StudentTakingCourseComponent
+    StudentTakingCourseComponent,
+    CoursesListComponent,
+    TeacherViewCourseDataComponent
   ],
   imports: [
     BrowserModule,
