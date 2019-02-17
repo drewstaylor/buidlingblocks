@@ -1,9 +1,13 @@
 <div class="content-wrapper container-fluid">
   <a routerLink="/student/dashboard">Back to Dashboard</a>
   <div class="container">
-    <div class="row" *ngFor="let course of courseList; index as i;">
+    <div class="row" *ngFor="let course of courseList[0]; index as i;">
       <p>
-        <a routerLink="/student/course/{{ i }}" >{{ i + 1 }}) {{ course }}</a>
+          {{ i + 1 }})<a routerLink="/student/course/{{ i }}" > {{ course }}
+          <span *ngIf="courseList[1][i] == 0"> - MATH</span>
+          <span *ngIf="courseList[1][i] == 1"> - READING</span>
+          <span *ngIf="courseList[1][i] == 2"> - SCIENCE</span>
+          </a>
       </p>
     </div>
   </div>

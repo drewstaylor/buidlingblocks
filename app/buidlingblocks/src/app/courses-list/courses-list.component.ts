@@ -21,7 +21,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.courseList = await this.contractService.listCourses();
+    this.courseList = await this.contractService.listNamesAndTypes();
     
     console.log('this.courseList =>', this.courseList);
 
