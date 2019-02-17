@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  seed: "n_5=L6X-k@u6NJ4vUKnE5*&qLW!8#RnRLmE?"
 };
 
 /*

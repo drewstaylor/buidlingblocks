@@ -3,6 +3,7 @@ import { NgForm, FormsModule }   from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
+import { HasherService } from '../services/hasher.service';
 import { Buffer } from 'buffer';
 
 declare let window: any;
@@ -39,11 +40,13 @@ export class CourseCreatorComponent implements OnInit {
   file: any;
 
   private courseSubmission: string;
+  private hashedAnswers: Array<string>;
 
   constructor(
     private authService: AuthService,
     private contractService: ContractService,
-    private ipfsService: IpfsService
+    private ipfsService: IpfsService,
+    private hasherService: HasherService
   ) {
     this.authService.login(false);
   }
@@ -120,6 +123,18 @@ export class CourseCreatorComponent implements OnInit {
       console.log('ipfsHash =>', ipfsHash);
       this.courseSubmission = ipfsHash[0].hash;
     });
+
+    let answersRaw = this.courseContent.answers;
+    // Hash answer results one x one
+    this.hashedAnswers = [];
+    for (var i = 0; i < answersRaw.length; i++) {
+      // Hash a toLowerCase() version of the answer
+      // to promote consistency of test answers
+      let answerRaw = answersRaw[i].value.toLowerCase();
+      let answerHashed = this.hasherService.hash(answerRaw)
+      this.hashedAnswers.push(answerHashed);
+    }
+    console.log('Array of Hashed Correct Answers', this.hashedAnswers);
   } 
 
 
