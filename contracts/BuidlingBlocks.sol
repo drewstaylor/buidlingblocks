@@ -17,30 +17,64 @@ contract BuidlingBlockInterface{
         address studentAddress;
 
     }
-
-
 }
 
 contract BuidlingBlocks is BuidlingBlockInterface {
 
-    address[] teachers;
-    address[] students;
+    address[] public teachers;
+    address[] public students;
+    address[] public courses;
+
+    mapping(address => address[]) public coursesByTeacher;
 
     constructor() public {
 
     }
+    event teacherRegistered(address teacher);
 
     function registerTeacher() public{
-
+        teachers.push(msg.sender);
+        emit teacherRegistered(msg.sender);
     }
 
     function registerStudent() public{
-
+        students.push(msg.sender);
     }
 
-
+    event newCourse(address CourseContract, address Teacher);
     function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream) public {
 
+        Course c = new Course(_ageGroup,_courseStream, msg.sender);
+        courses.push(address(c));
+        coursesByTeacher[msg.sender].push(address(c));
+
+        emit newCourse(address(c), msg.sender);
+    }
+
+     function getCoursesByTeacher(address teacher) public view returns(address[] memory courses){
+        return coursesByTeacher[teacher];
+    }
+
+    function getTeacher(uint index)  public view returns (address){
+        return teachers[index];
+    }
+
+      function getStudent(uint index)  public view returns (address){
+        return teachers[index];
+    }
+
+      function getCourse(uint index)  public view returns (address){
+        return teachers[index];
+    }
+
+    function getTeacherLength() public view returns (uint){
+        return teachers.length;
+    }
+      function getStudentsLength() public view returns (uint){
+        return students.length;
+    }
+      function getCoursesLength() public view returns (uint){
+        return courses.length;
     }
 
 }
@@ -53,7 +87,7 @@ contract Course is BuidlingBlockInterface{
 
     AgeGroup ageGroup;
     CourseStream courseStream;
-    Teacher teacher;
+    address public teacher;
 
     step[] steps;
     Test[] tests;
@@ -69,14 +103,16 @@ contract Course is BuidlingBlockInterface{
         string[] questions;
         bytes32[] answers;
         string[][] options;
+        mapping(address => bytes32[]) responses;
         mapping(address => uint) testScores;
         address[] testTakers;
     }
 
 
-    constructor (AgeGroup _ageGroup, CourseStream _courseStream) public{
+    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address teacher) public{
         ageGroup = _ageGroup;
         courseStream = _courseStream;
+        teacher = teacher;
     }
         //teachers
 
@@ -99,10 +135,7 @@ contract Course is BuidlingBlockInterface{
         tests[testIndex].answers = answers;
         tests[testIndex].options = options;
     }
-    
-    function addQuestion(uint stepNumber, string memory questionText) internal {
 
-    }
 
     function getStudentTestScore(uint testID, address student) public view returns(uint testScore){
         return tests[testID].testScores[student];
@@ -118,13 +151,15 @@ contract Course is BuidlingBlockInterface{
     }
 
     //students
-    function submitAnswers(bytes32[] memory answers) public{
-
+    function submitResponses(uint testID, bytes32[] memory responses) public{
+       tests[testID].responses[msg.sender] = responses;
     }
 
     function getTestScore(uint testID) public view returns (uint){
-
         return tests[testID].testScores[msg.sender];
+
     }
+
+    //all
 
 }
