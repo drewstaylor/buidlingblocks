@@ -59,7 +59,7 @@ export class CourseCreatorComponent implements OnInit {
   }
 
   public addStep(): void {
-    this.courseContent.steps.push({title: null, body: null});
+    this.courseContent.steps.push({title: null, body: null, file: null});
   }
 
   public removeStep(): void {
