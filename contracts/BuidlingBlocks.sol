@@ -3,24 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "./SteppingStones.sol";
 
-contract BuidlingBlocksInterface{
-    enum AgeGroup {PreSchool,Elementary,Secondary}
-
-    enum CourseStream {Math, Science, Reading}
-
-      struct Teacher {
-        string Name;
-        address teacherAddress;
-    }
-
-    struct Student {
-        string Name;
-        AgeGroup ageGroup;
-        address studentAddress;
-    }
-}
-
-contract BuidlingBlocks is BuidlingBlocksInterface,SteppingStones {
+contract BuidlingBlocks is SteppingStones {
 
     address[] public teachers;
     address[] public students;
@@ -50,9 +33,9 @@ contract BuidlingBlocks is BuidlingBlocksInterface,SteppingStones {
         emit studentRegistered(msg.sender);
     }
 
-    function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream, bytes32 courseHash, bytes32[] memory answers) public {
+    function launchCourse(bytes32 courseHash, bytes32[] memory answers) public {
 
-        Course c = new Course(_ageGroup,_courseStream, msg.sender,courseHash, answers);
+        Course c = new Course(msg.sender,courseHash, answers);
         courses.push(address(c));
         coursesByTeacher[msg.sender].push(address(c));
 
@@ -109,22 +92,18 @@ contract BuidlingBlocks is BuidlingBlocksInterface,SteppingStones {
 
 }
 
-contract Course is BuidlingBlocksInterface{
+contract Course{
 
 
     // hash correct answers
     string public Name;
     BuidlingBlocks BuidlingBlocksContract;
 
-    AgeGroup public ageGroup;
-    CourseStream public courseStream;
     address public teacher;
 
     bytes32 courseHash;
 
-    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher, bytes32 _courseHash, bytes32[] memory _answers) public{
-        ageGroup = _ageGroup;
-        courseStream = _courseStream;
+    constructor (address _teacher, bytes32 _courseHash, bytes32[] memory _answers) public{
         teacher = _teacher;
         BuidlingBlocksContract = BuidlingBlocks(msg.sender);
 
