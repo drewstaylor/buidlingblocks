@@ -50,9 +50,9 @@ contract BuidlingBlocks is BuidlingBlocksInterface,SteppingStones {
         emit studentRegistered(msg.sender);
     }
 
-    function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream, bytes32 courseHash) public {
+    function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream, bytes32 courseHash, bytes32[] memory answers) public {
 
-        Course c = new Course(_ageGroup,_courseStream, msg.sender,courseHash);
+        Course c = new Course(_ageGroup,_courseStream, msg.sender,courseHash, answers);
         courses.push(address(c));
         coursesByTeacher[msg.sender].push(address(c));
 
@@ -116,19 +116,20 @@ contract Course is BuidlingBlocksInterface{
     string public Name;
     BuidlingBlocks BuidlingBlocksContract;
 
-    AgeGroup ageGroup;
-    CourseStream courseStream;
+    AgeGroup public ageGroup;
+    CourseStream public courseStream;
     address public teacher;
 
     bytes32 courseHash;
 
-    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher, bytes32 _courseHash) public{
+    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher, bytes32 _courseHash, bytes32[] memory _answers) public{
         ageGroup = _ageGroup;
         courseStream = _courseStream;
         teacher = _teacher;
         BuidlingBlocksContract = BuidlingBlocks(msg.sender);
 
         courseHash = _courseHash;
+        answers = _answers;
     }
         //teachers
 
