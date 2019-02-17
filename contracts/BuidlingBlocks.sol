@@ -16,7 +16,19 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
     address[] public courses;
 
     CourseType[] public courseTypes;
+    string[] public names;
 
+    function getCourseNames() public view returns(string[] memory){
+        return names;
+    }
+
+    function getCourseTypes() public view returns(CourseType[] memory){
+        return courseTypes;
+    }
+
+    function namesAndTypes() public view returns(string[] memory, CourseType[] memory){
+        return (names,courseTypes);
+    }
 
     mapping(address => bool) public isTeacher;
     mapping(address => bool) public isStudent;
@@ -51,6 +63,8 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
 
         isCourse[address(c)] = true;
         courseTypes.push(_courseType);
+        names.push(Name);
+        courseTypes.push(_courseType);
 
         emit courseLaunched(address(c), msg.sender,Name);
     }
@@ -67,12 +81,6 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
         return teachers[index];
     }
 
-
-
-
-
-
-
     function getTeacherLength() public view returns (uint){
         return teachers.length;
     }
@@ -82,8 +90,6 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
       function getCoursesLength() public view returns (uint){
         return courses.length;
     }
-
-
 
     //Stones
     event minted(address, uint);
