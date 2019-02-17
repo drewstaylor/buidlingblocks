@@ -1,105 +1,141 @@
-<div class="container">
-  <div class="row">
-    <div class="content-wrapper">
-      <form
-        name="course_form"
-        (ngSubmit)="submitCourse();"
-      >
-        <div class="row step-label">
-          <h3>
-            <strong>Add one or more lesson steps to your course:</strong>
-          </h3>
-        </div>
-        <div class="row" *ngFor="let step of courseContent.steps; index as i;">
-          <input
-            [(ngModel)]="courseContent.steps[i].title"
-            type="text"
-            name="step-title-{{i}}"
-            class="form-control" 
-            placeholder="Lesson title"
-            required
-          >
-          <textarea
-            [(ngModel)]="courseContent.steps[i].body"
-            maxlength="1000"
-            name="step-body-{{i}}"
-            placeholder="My awesome course lesson plan..."
-          >
-          </textarea>
-          <input 
-            class="file" 
-            type="file" 
-            name="step-file-{{i}}" 
-            (change)="fileChangedCourseAsset($event,i)"
-          >
-        </div>
-        <div class="row controls">
-          <div class="inner-controls">
-            <span class="add add-step" (click)="addStep();">+</span>
-            <span class="remove remove-step" (click)="removeStep();">-</span>
+<div class="content-wrapper container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="content-wrapper">
+        <form
+          name="course_form"
+          (ngSubmit)="submitCourse();"
+        >
+          <div class="row file-label">
+            <h1>
+              <strong>It's Learning Time!</strong>
+            </h1>
+            <p class="descr">
+              Use the following form to guide your students on their voyage of learning, and to plan your lesson. 
+            </p>
           </div>
-        </div>
-        <div class="row file-label">
-          <h3>
-            <strong>Add a course exams to your lesson:</strong>
-          </h3>
-        </div>
-        <div class="col-sm exams files file" *ngFor="let exam of courseContent.exams; index as i;">
-          <p>
-            <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+          <div class="row course-title-label">
+            <input 
+              [(ngModel)]="courseContent.courseTitle"
+              type="text"
+              name="course_title"
+              placeholder="My awesome course title"
+            >
+          </div>
+          <div class="row suggested-age-label">
+            <p class="suggested-age">
+              <select 
+                name="suggested_age"
+                [(ngModel)]="courseContent.ageGroup"
+              >
+                <option value="-1">Select an answer type</option>
+                <option value="0">Early childhood education</option>
+                <option value="1">Primary / elementary school</option>
+                <option value="2">Secondary school</option>
+              </select>
+            </p>
+          </div>
+          <div class="row step-label">
+            <h3>
+              <strong>Add one or more steps to your lesson plan:</strong>
+            </h3>
+          </div>
+          <div class="row" *ngFor="let step of courseContent.steps; index as i;">
+            <div class="row container">
+                <span>
+                  <strong>Step {{i + 1}}:</strong>
+                </span>
+            </div>
+            <input
+              [(ngModel)]="courseContent.steps[i].title"
+              type="text"
+              name="step-title-{{i}}"
+              class="form-control" 
+              placeholder="Lesson title"
+              required
+            >
+            <textarea
+              [(ngModel)]="courseContent.steps[i].body"
+              maxlength="1000"
+              name="step-body-{{i}}"
+              placeholder="My awesome course lesson plan..."
+            >
+            </textarea>
             <input 
               class="file" 
               type="file" 
-              name="exam-file-{{i}}" 
-              (change)="fileChanged($event,i)"
+              name="step-file-{{i}}" 
+              (change)="fileChangedCourseAsset($event,i)"
             >
-          </p>
-          <p>
-              <label for="total-questions-{{i}}">Total number of questions:</label>
-              <input 
-                class="questions-total"
-                type="number" 
-                min="1" 
-                name="total-questions-{{i}}"
-                [(ngModel)]="courseContent.exams[i].totalQuestions"
-                (change)="arrayMaker(courseContent.exams[i].totalQuestions)"
-              >
-          </p>
-          <div class="col-sm label">
-            <div *ngFor="let answer of courseContent.answers; index as j;">
-              <p>
-                <select 
-                  name="answer-type-{{j}}"
-                  [(ngModel)]="answer.type"
-                >
-                  <option value="-1">Select an answer type</option>
-                  <option value="0">Multiple Choice</option>
-                  <option value="1">True or False</option>
-                  <option value="3">Mathematical / Numerical</option>
-                </select>
-                <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
-                <input 
-                  type="text"
-                  placeholder="Correct answer for question {{j + 1}}"
-                  [(ngModel)]="answer.value"
-                  name="exams-answers-{{j}}"
-                >
-              </p>
+          </div>
+          <div class="row controls">
+            <div class="inner-controls">
+              <span class="add add-step" alt="Add a new step to your lesson plan!" (click)="addStep();">+</span>
+              <span class="remove remove-step" alt="Oops! Remove the last step added to your lesson plan!" (click)="removeStep();">-</span>
             </div>
           </div>
-        </div>
-        <!--
-        <div class="row controls">
-          <div class="inner-controls">
-            <span class="add add-file" (click)="addFile();">+</span>
-            <span class="remove remove-file" (click)="removeFile();">-</span>
+          <div class="row file-label">
+            <h3>
+              <strong>Add a course review exam to your lesson plan:</strong>
+            </h3>
           </div>
-        </div>
-        -->
-        <div class="row">
-          <button type="submit" class="btn btn-primary">Create New Course!</button>
-        </div>
-      </form>
+          <div class="col-sm exams files file" *ngFor="let exam of courseContent.exams; index as i;">
+            <p>
+              <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+              <input 
+                class="file" 
+                type="file" 
+                name="exam-file-{{i}}" 
+                (change)="fileChanged($event,i)"
+              >
+            </p>
+            <p>
+                <label for="total-questions-{{i}}">Total number of questions:</label>
+                <input 
+                  class="questions-total"
+                  type="number" 
+                  min="1" 
+                  name="total-questions-{{i}}"
+                  [(ngModel)]="courseContent.exams[i].totalQuestions"
+                  (change)="arrayMaker(courseContent.exams[i].totalQuestions)"
+                >
+            </p>
+            <div class="col-sm label">
+              <div *ngFor="let answer of courseContent.answers; index as j;">
+                <p>
+                  <select 
+                    name="answer-type-{{j}}"
+                    [(ngModel)]="answer.type"
+                  >
+                    <option value="-1">Select an answer type</option>
+                    <option value="0">Multiple Choice</option>
+                    <option value="1">True or False</option>
+                    <option value="3">Mathematical / Numerical</option>
+                  </select>
+                  <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+                  <input 
+                    type="text"
+                    placeholder="Correct answer for question {{j + 1}}"
+                    [(ngModel)]="answer.value"
+                    name="exams-answers-{{j}}"
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="row controls">
+            <div class="inner-controls">
+              <span class="add add-file" (click)="addFile();">+</span>
+              <span class="remove remove-file" (click)="removeFile();">-</span>
+            </div>
+          </div>
+          -->
+          <div class="row">
+            <button type="submit" class="btn btn-primary">Create New Course!</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

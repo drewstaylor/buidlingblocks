@@ -13,21 +13,32 @@ declare let window: any;
   styleUrls: ['./course-creator.component.css']
 })
 export class CourseCreatorComponent implements OnInit {
+  /**
+   * AGE GROUPS ENUM:
+   * 0 = Preschool
+   * 1 = Elementary
+   * 2 = Secondary
+   */
+  readonly AGE_GROUPS = ['preschool', 'elemntary', 'secondary'];
 
   // Form elements
 	@ViewChild('courseForm') courseForm: NgForm;
 
   public courseContent = {
+    courseTitle: null,
     steps: [
       {title: null, body: null, file: null}
     ],
     exams: [
       {file: null, totalQuestions: null}
     ],
-    answers: []
+    answers: [],
+    ageGroup: -1
   };
 
   file: any;
+
+  private courseSubmission: string;
 
   constructor(
     private authService: AuthService,
@@ -81,9 +92,9 @@ export class CourseCreatorComponent implements OnInit {
     await this.ipfsService.ipfs.add(buffer, (err, ipfsHash) => {
       console.log('ipfsHash =>', ipfsHash);
       if (context === 1) 
-        this.courseContent.exams[index].file = ipfsHash;
+        this.courseContent.exams[index].file = ipfsHash[0].hash;
       else if (context === 0)
-        this.courseContent.steps[index].file = ipfsHash;
+        this.courseContent.steps[index].file = ipfsHash[0].hash;
       // Debug
       console.log('courseContent =>', this.courseContent);
     });
@@ -96,10 +107,19 @@ export class CourseCreatorComponent implements OnInit {
     }
   }
 
-  public submitCourse(): void {
+  public async submitCourse() {
     console.log('Submitting course...', this.courseContent);
-    // TODO: Submit course through service
-    // IPFS upload plus blockchain transaction
+    
+    // TODO: Submit course to Ethereum network through contract service
+    
+    // Send a JSON Stringified version of courseContent to IPFS
+    let jsonData = JSON.stringify(this.courseContent);
+    const buffer = Buffer.from(jsonData);
+
+    await this.ipfsService.ipfs.add(buffer, (err, ipfsHash) => {
+      console.log('ipfsHash =>', ipfsHash);
+      this.courseSubmission = ipfsHash[0].hash;
+    });
   } 
 
 
