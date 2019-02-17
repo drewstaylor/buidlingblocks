@@ -153,6 +153,13 @@ export class ContractService {
   }
 
   /**
+   * Names and types
+   */
+  public async listNamesAndTypes() {
+    return await this.bbContractInstance.methods.namesAndTypes().call({from: window.userAccount});
+  }
+
+  /**
    * List functions
    */
   public async listCourses() {
