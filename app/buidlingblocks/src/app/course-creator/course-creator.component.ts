@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormsModule }   from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
@@ -47,7 +48,8 @@ export class CourseCreatorComponent implements OnInit {
     private authService: AuthService,
     private contractService: ContractService,
     private ipfsService: IpfsService,
-    private hasherService: HasherService
+    private hasherService: HasherService,
+    private router: Router
   ) {
     this.authService.login(false);
   }
@@ -136,7 +138,17 @@ export class CourseCreatorComponent implements OnInit {
     }
     console.log('Array of Hashed Correct Answers', this.hashedAnswers);
 
-    await this.contractService.launchCourse(this.courseSubmission, this.hashedAnswers);
+    let courseLaunch = await this.contractService.launchCourse(
+      this.courseSubmission,
+      this.courseContent.courseTitle,
+      this.courseContent.courseType,
+      this.courseContent.ageGroup,
+      this.hashedAnswers
+    );
+
+    if (courseLaunch) {
+      this.router.navigate(['/teacher/my-courses']);
+    }
   } 
 
 

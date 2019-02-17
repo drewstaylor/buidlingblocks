@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import bs58 from 'bs58';
-import Buffer from 'buffer';
+import { Buffer } from 'buffer';
 
 declare let Web3: any;
 declare let window: any;
@@ -16,6 +16,7 @@ export class ContractService {
   private initialized: boolean = false;
 
   // Blockchain instance parameters
+
   private bbContractAddress: string = '0x7487d529c7D993A7590fdb4CB6ED43EFbC26D4e7';
   private launchCourseContractAddress: string = '0x18128d6B244fB471D21FD0c298A13Da5668178e1';
   private bbContractInstance;
@@ -107,13 +108,16 @@ export class ContractService {
   public async registerTeacher() {
     return await this.bbContractInstance.methods.registerTeacher().send();
   }
-  public async launchCourse(ipfsHash, answerHashes) {
+  public async launchCourse(ipfsHash, courseTitle, courseType, ageGroup, answerHashes) {
 	  // const ipfsHashBytes32 = window.web3.utils.bytesToHex(ipfsHash);
 	  // console.log("ipfs hash: "+ ipfsHash +" -> "+ ipfsHashBytes32);
 	  const ipfsHashBytes32 = this.getBytes32FromIpfsHash(ipfsHash);
 	  const answerHashesByte32 = answerHashes.map(hash => window.web3.utils.bytesToHex(hash));
 	  return await this.bbContractInstance.methods.launchCourse(
-		  ipfsHashBytes32,
+      ipfsHashBytes32,
+      courseTitle.toString(),
+      parseInt(courseType),
+      parseInt(ageGroup),
 		  answerHashesByte32)
 		.send();
   }
@@ -154,7 +158,7 @@ export class ContractService {
   public async listCourses() {
     return this.listItems(
       this.bbContractInstance.methods.getCoursesLength(),
-      this.bbContractInstance.methods.courses);
+      this.bbContractInstance.methods.courseHashes);
   }
   public async listTeachers() {
     return this.listItems(
