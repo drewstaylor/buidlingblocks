@@ -151,7 +151,7 @@ export class ContractService {
   /**
    * List functions
    */
-  public async listCoursesHashes() {
+  public async listCourses() {
     return this.listItems(
       this.bbContractInstance.methods.getCoursesLength(),
       this.bbContractInstance.methods.courses);
