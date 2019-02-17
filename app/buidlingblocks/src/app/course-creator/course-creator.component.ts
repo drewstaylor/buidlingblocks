@@ -27,6 +27,7 @@ export class CourseCreatorComponent implements OnInit {
 
   public courseContent = {
     courseTitle: null,
+    courseType: -1,
     steps: [
       {title: null, body: null, file: null}
     ],

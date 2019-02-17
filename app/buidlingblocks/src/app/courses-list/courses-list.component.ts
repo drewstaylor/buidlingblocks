@@ -25,12 +25,11 @@ export class CoursesListComponent implements OnInit {
     
     console.log('this.courseList =>', this.courseList);
 
-    for (var i = 0; i < this.courseList.length; i++) {
-      this.courses[i] = await this.contractService.getCourse(i);
-    }
-
-    console.log('this.courses =>', this.courses);
-
+    //for (var i = 0; i < this.courseList.length; i++) {
+    //  this.courses[i] = await this.contractService.getCourse(i);
+    //}
+    //console.log('this.courses =>', this.courses);
+    
   }
 
 }

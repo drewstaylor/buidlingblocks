@@ -160,7 +160,7 @@ export class ContractService {
    * Getters (by index)
    */
   public async getCourse(index) {
-    return await this.bbContractInstance.methods.getCourse(index).call({from: window.userAccount});
+    return await this.bbContractInstance.methods.courses(index).call({from: window.userAccount});
   }
   public async getTeacher(index) {
     return await this.bbContractInstance.methods.getTeacher(index).call({from: window.userAccount});

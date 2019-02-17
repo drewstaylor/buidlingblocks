@@ -29,13 +29,26 @@
                 name="suggested_age"
                 [(ngModel)]="courseContent.ageGroup"
               >
-                <option value="-1">Select an answer type</option>
+                <option value="-1">Select an appropriate learning age</option>
                 <option value="0">Early childhood education</option>
                 <option value="1">Primary / elementary school</option>
                 <option value="2">Secondary school</option>
               </select>
             </p>
           </div>
+          <div class="row course-type-label">
+              <p class="course-type">
+                <select 
+                  name="course_type"
+                  [(ngModel)]="courseContent.courseType"
+                >
+                  <option value="-1">Select a course category</option>
+                  <option value="0">Math</option>
+                  <option value="1">Reading</option>
+                  <option value="2">Science</option>
+                </select>
+              </p>
+            </div>
           <div class="row step-label">
             <h3>
               <strong>Add one or more steps to your lesson plan:</strong>
