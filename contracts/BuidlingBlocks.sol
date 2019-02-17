@@ -1,9 +1,9 @@
 pragma solidity ^0.5.4;
 pragma experimental ABIEncoderV2;
 
-import "./Stones.sol";
+import "./SteppingStones.sol";
 
-contract SteppingStonesInterface{
+contract BuidlingBlocksInterface{
     enum AgeGroup {PreSchool,Elementary,Secondary}
 
     enum CourseStream {Math, Science, Reading}
@@ -20,7 +20,7 @@ contract SteppingStonesInterface{
     }
 }
 
-contract SteppingStones is SteppingStonesInterface,Stones {
+contract BuidlingBlocks is BuidlingBlocksInterface,SteppingStones {
 
     address[] public teachers;
     address[] public students;
@@ -50,9 +50,9 @@ contract SteppingStones is SteppingStonesInterface,Stones {
         emit studentRegistered(msg.sender);
     }
 
-    function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream) public {
+    function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream, bytes32 courseHash) public {
 
-        Course c = new Course(_ageGroup,_courseStream, msg.sender);
+        Course c = new Course(_ageGroup,_courseStream, msg.sender,courseHash);
         courses.push(address(c));
         coursesByTeacher[msg.sender].push(address(c));
 
@@ -109,95 +109,68 @@ contract SteppingStones is SteppingStonesInterface,Stones {
 
 }
 
-contract Course is SteppingStonesInterface{
+contract Course is BuidlingBlocksInterface{
 
 
     // hash correct answers
     string public Name;
-    SteppingStones SteppingStonesContract;
+    BuidlingBlocks BuidlingBlocksContract;
 
     AgeGroup ageGroup;
     CourseStream courseStream;
     address public teacher;
 
-    step[] steps;
-    Test[] tests;
+    bytes32 courseHash;
 
-
-    struct step {
-        bytes32 textHash;
-        bytes32 imageHash;
-
-    }
-
-    struct Test {
-        string[] questions;
-        bytes32[] answers;
-        string[][] options;
-        mapping(address => bytes32[]) responses;
-        mapping(address => uint) testScores;
-        address[] testTakers;
-    }
-
-    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher) public{
+    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher, bytes32 _courseHash) public{
         ageGroup = _ageGroup;
         courseStream = _courseStream;
         teacher = _teacher;
-        SteppingStonesContract = SteppingStones(msg.sender);
+        BuidlingBlocksContract = BuidlingBlocks(msg.sender);
+
+        courseHash = _courseHash;
     }
         //teachers
 
+        bytes32[] answers;
 
-    function addStep(bytes32 textHash, bytes32 imageHash) public {
-        uint stepIndex = steps.length;
-        steps[stepIndex].textHash = textHash;
-        steps[stepIndex].imageHash = imageHash;
-    }
+        mapping(address => bytes32[]) responses;
+        mapping(address => uint) testScores;
+        address[] testTakers;
 
-    function addSteps(bytes32[] memory textHashes, bytes32[] memory imageHashes) public {
-        require(textHashes.length==imageHashes.length);
-        for (uint i=0;i<imageHashes.length;i++){
-            addStep(textHashes[i],imageHashes[i]);
-        }
-    }
+        mapping(address => bool) hasTakenTest;
 
-    function addTest(string[] memory questionTexts, bytes32[] memory answers, string[][] memory options) public{
-        uint testIndex = tests.length;
-        tests[testIndex].questions = questionTexts;
-        tests[testIndex].answers = answers;
-        tests[testIndex].options = options;
-    }
+
+
+
 
     function getStudentTestScore(uint testID, address student) public view returns(uint testScore){
-        return tests[testID].testScores[student];
+        return testScores[student];
     }
 
-    function getAllTestScores(uint testID) public view returns(uint[] memory testScores){
-        uint[] memory allTestScores;
-        for(uint i=0; i<tests[testID].testTakers.length;i++){
-            address testTaker = tests[testID].testTakers[i];
-            allTestScores[i] = tests[testID].testScores[testTaker];
-        }
-        return allTestScores;
+    function getAllTestScores(uint testID) public view returns(uint[] memory Scores){
+
     }
 
     //students
-    function submitResponses(uint testID, bytes32[] memory responses) public{
-       require(responses.length == tests[testID].questions.length);
-       require(tests[testID].responses[msg.sender].length==0);
-       tests[testID].responses[msg.sender] = responses;
+    function submitResponses(uint testID, bytes32[] memory _responses) public{
+       require(_responses.length == answers.length);
+       require(hasTakenTest[msg.sender]==false);
+       responses[msg.sender] = _responses;
 
-       for(uint i = 0; i<responses.length;i++){
-           if(responses[i]==tests[testID].answers[i]){
-               tests[testID].testScores[msg.sender]+=1;
+       for(uint i = 0; i<_responses.length;i++){
+           if(_responses[i]==answers[i]){
+               testScores[msg.sender]+=1;
            }
        }
-       SteppingStonesContract.mint(msg.sender,tests[testID].testScores[msg.sender]);
+       BuidlingBlocksContract.mint(msg.sender,testScores[msg.sender]);
     }
 
     function getTestScore(uint testID) public view returns (uint){
-        return tests[testID].testScores[msg.sender];
+        return testScores[msg.sender];
     }
+
+
 
     //internal contract
 
