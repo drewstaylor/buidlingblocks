@@ -17,4 +17,19 @@ export class IpfsService {
     this.ipfs = new window.IpfsHttpClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
     //console.log('this.ipfs =>', this.ipfs);
   }
+
+  public readFileAsStream(IpfsHash: string) {
+    // Init IPFS
+    this.bootstrap();
+    // Attempt read stream
+    try {
+      const stream = this.ipfs.getReadableStream(IpfsHash);
+      return stream;
+    } catch (err) {
+      console.log('Error reading IPFS stream', err)
+      return err;
+    }
+    
+
+  }
 }

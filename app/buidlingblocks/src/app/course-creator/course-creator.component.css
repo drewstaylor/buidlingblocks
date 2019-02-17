@@ -73,8 +73,11 @@ p {
     margin: auto;
 }
 
-p.suggested-age {
+p.suggested-age,
+p.course-type {
     margin: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 button {

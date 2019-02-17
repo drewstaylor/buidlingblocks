@@ -1,3 +1,8 @@
-<p>
-  courses-list works!
-</p>
+<div class="content-wrapper container-fluid">
+  <a routerLink="/student/dashboard">Back to Dashboard</a>
+  <div class="container">
+    <div class="row" *ngFor="let course of courseList; index as i;">
+      <p>{{ course }}</p>
+    </div>
+  </div>
+</div>
