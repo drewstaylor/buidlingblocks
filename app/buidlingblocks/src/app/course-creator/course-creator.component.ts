@@ -136,7 +136,12 @@ export class CourseCreatorComponent implements OnInit {
     }
     console.log('Array of Hashed Correct Answers', this.hashedAnswers);
 
-    await this.contractService.launchCourse(this.courseSubmission, this.hashedAnswers);
+    await this.contractService.launchCourse(
+      this.courseSubmission,
+      this.courseContent.courseTitle,
+      this.courseContent.courseType,
+      this.hashedAnswers
+    );
   } 
 
 

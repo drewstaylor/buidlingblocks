@@ -2,7 +2,9 @@
   <a routerLink="/student/dashboard">Back to Dashboard</a>
   <div class="container">
     <div class="row" *ngFor="let course of courseList; index as i;">
-      <p>{{ course }}</p>
+      <p>
+        <a routerLink="/student/course/{{ i }}" >{{ i + 1 }}) {{ course }}</a>
+      </p>
     </div>
   </div>
 </div>
