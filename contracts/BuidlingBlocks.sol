@@ -15,7 +15,7 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
 
     address[] public courses;
 
-    bytes32[] public courseHashes;
+    CourseType[] public courseTypes;
 
 
     mapping(address => bool) public isTeacher;
@@ -24,8 +24,7 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
 
     event teacherRegistered(address teacher);
     event studentRegistered(address student);
-    event courseLaunched(address courseContract, address teacher);
-
+    event courseLaunched(address courseContract, address teacher, string courseTitle);
 
     mapping(address => address[]) public coursesByTeacher;
 
@@ -43,6 +42,7 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
         emit studentRegistered(msg.sender);
     }
 
+
     function launchCourse(bytes32 courseHash, string memory Name, CourseType _courseType, AgeGroup _ageGroup, bytes32[] memory answers) public {
 
         Course c = new Course(msg.sender,courseHash, Name, _courseType, _ageGroup, answers);
@@ -50,10 +50,9 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
         coursesByTeacher[msg.sender].push(address(c));
 
         isCourse[address(c)] = true;
+        courseTypes.push(_courseType);
 
-        courseHashes.push(courseHash);
-
-        emit courseLaunched(address(c), msg.sender);
+        emit courseLaunched(address(c), msg.sender,Name);
     }
 
      function getCoursesByTeacher(address teacher) public view returns(address[] memory courseList){
@@ -104,9 +103,11 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
 
     //Verifiers
 
-    function getCourseData(uint index) public view returns(bytes32 courseHash,string memory courseTitle,CourseType courseType, AgeGroup ageGroup) {
+    function getCourseData(uint index) public view returns(bytes32 courseHash,string memory courseTitle,CourseType courseType, AgeGroup ageGroup, bytes32[] memory answers) {
         return Course(courses[index]).getCourseData();
     }
+
+
 
 }
 
@@ -118,8 +119,6 @@ contract Course is enumInterface{
     // hash correct answers
     string public courseTitle;
     BuidlingBlocks BuidlingBlocksContract;
-
-
 
     address public teacher;
 
@@ -156,7 +155,7 @@ contract Course is enumInterface{
     function getAllTestScores(uint testID) public view returns(uint[] memory Scores){
 
     }
-    
+
     //students
     event testTaken(address student,uint score,uint maxScore);
 
@@ -178,8 +177,8 @@ contract Course is enumInterface{
         return testScores[msg.sender];
     }
 
-    function getCourseData() public view returns(bytes32 ,string memory ,CourseType, AgeGroup) {
-        return(courseHash,courseTitle,courseType,ageGroup);
+    function getCourseData() public view returns(bytes32 ,string memory ,CourseType, AgeGroup,bytes32[] memory answers) {
+        return(courseHash,courseTitle,courseType,ageGroup,answers);
     }
     //internal contract
 
