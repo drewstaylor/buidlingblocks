@@ -41,7 +41,7 @@ export class ContractService {
         network: this.network,
         endpoint: this.rpcEndpoint,
 		abi: [{"constant":false,"inputs":[],"name":"registerTeacher","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"students","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"courseHash","type":"bytes32"},{"name":"answers","type":"bytes32[]"}],"name":"launchCourse","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"index","type":"uint256"}],"name":"getCourse","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"coursesByTeacher","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getCoursesLength","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"teachers","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"recipient","type":"address"},{"name":"value","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"registerStudent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowed","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"index","type":"uint256"}],"name":"getStudent","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"teacher","type":"address"}],"name":"getCoursesByTeacher","outputs":[{"name":"courseList","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"courses","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"recipient","type":"address"},{"name":"value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"index","type":"uint256"}],"name":"getTeacher","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getStudentsLength","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getTeacherLength","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"teacher","type":"address"}],"name":"teacherRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"student","type":"address"}],"name":"studentRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"courseContract","type":"address"},{"indexed":false,"name":"teacher","type":"address"}],"name":"courseRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"address"},{"indexed":false,"name":"","type":"uint256"}],"name":"minting","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"","type":"address"},{"indexed":false,"name":"","type":"uint256"}],"name":"burning","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}],
-		courseLaunchAbi: [{"constant":true,"inputs":[{"name":"testID","type":"uint256"}],"name":"getTestScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"testID","type":"uint256"}],"name":"getAllTestScores","outputs":[{"name":"Scores","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"teacher","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"testID","type":"uint256"},{"name":"student","type":"address"}],"name":"getStudentTestScore","outputs":[{"name":"testScore","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"testID","type":"uint256"},{"name":"_responses","type":"bytes32[]"}],"name":"submitResponses","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_teacher","type":"address"},{"name":"_courseHash","type":"bytes32"},{"name":"_answers","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}],
+		courseAbi: [{"constant":true,"inputs":[{"name":"testID","type":"uint256"}],"name":"getTestScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"testID","type":"uint256"}],"name":"getAllTestScores","outputs":[{"name":"Scores","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"teacher","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"testID","type":"uint256"},{"name":"student","type":"address"}],"name":"getStudentTestScore","outputs":[{"name":"testScore","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"testID","type":"uint256"},{"name":"_responses","type":"bytes32[]"}],"name":"submitResponses","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_teacher","type":"address"},{"name":"_courseHash","type":"bytes32"},{"name":"_answers","type":"bytes32[]"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}],
     };
     this.Contract = data;
     this.init();
@@ -60,6 +60,17 @@ export class ContractService {
     console.log('BB Contract Instance =>', this.bbContractInstance);
 
     this.initialized = true;
+
+	  /*
+	  (async () => {
+		    // XXX: ugly testing -- will run on page load / refresh
+			console.log("ugly testing");
+			const firstAddr = await this.getCourseHash(0);
+			const courseObj = await this.getCourseObject(firstAddr);
+			console.log(courseObj);
+	  })();
+	  */
+
   };
 
   // These to/from ipfs hash functions were taken from:
@@ -140,7 +151,7 @@ export class ContractService {
   /**
    * List functions
    */
-  public async listCourses() {
+  public async listCoursesHashes() {
     return this.listItems(
       this.bbContractInstance.methods.getCoursesLength(),
       this.bbContractInstance.methods.courses);
@@ -159,14 +170,32 @@ export class ContractService {
   /**
    * Getters (by index)
    */
-  public async getCourse(index) {
-    return await this.bbContractInstance.methods.getCourse(index).call({from: window.userAccount});
+  public async getCourseHash(index) {
+    return await this.bbContractInstance.methods.courses(index).call({from: window.userAccount});
   }
   public async getTeacher(index) {
-    return await this.bbContractInstance.methods.getTeacher(index).call({from: window.userAccount});
+    return await this.bbContractInstance.methods.teachers(index).call({from: window.userAccount});
   }
   public async getStudent(index) {
-    return await this.bbContractInstance.methods.getStudent(index).call({from: window.userAccount});
+    return await this.bbContractInstance.methods.students(index).call({from: window.userAccount});
+  }
+
+  /**
+   * Returns an object representing the state of a course
+   *
+   * @param address - the address of the deployed course
+   */
+  public async getCourseObject(address) {
+
+    const courseInstance = new window.web3.eth.Contract(this.Contract.courseAbi, address);
+
+	let obj = { courseHash: null, teacher: null, name: null };
+
+	obj.courseHash = courseInstance.methods.courseHash().call({from: window.userAccount});
+	obj.teacher = courseInstance.methods.teacher().call({from: window.userAccount});
+	obj.name = courseInstance.methods.name().call({from: window.userAccount});
+
+	return obj;
   }
 
 }
