@@ -119,10 +119,9 @@ export class CourseCreatorComponent implements OnInit {
     let jsonData = JSON.stringify(this.courseContent);
     const buffer = Buffer.from(jsonData);
 
-    await this.ipfsService.ipfs.add(buffer, (err, ipfsHash) => {
-      console.log('ipfsHash =>', ipfsHash);
-      this.courseSubmission = ipfsHash[0].hash;
-    });
+    const ipfsHash = await this.ipfsService.ipfs.add(buffer);
+    console.log('ipfsHash =>', ipfsHash);
+    this.courseSubmission = ipfsHash[0].hash;
 
     let answersRaw = this.courseContent.answers;
     // Hash answer results one x one
@@ -135,6 +134,8 @@ export class CourseCreatorComponent implements OnInit {
       this.hashedAnswers.push(answerHashed);
     }
     console.log('Array of Hashed Correct Answers', this.hashedAnswers);
+
+    await this.contractService.launchCourse(this.courseSubmission, this.hashedAnswers);
   } 
 
 
