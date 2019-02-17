@@ -3,19 +3,29 @@ pragma experimental ABIEncoderV2;
 
 import "./SteppingStones.sol";
 
-contract BuidlingBlocks is SteppingStones {
+interface enumInterface{
+    enum CourseType { Math, Science, Reading}
+     enum AgeGroup {Preschool, Elementary,Secondary}
+}
+
+contract BuidlingBlocks is SteppingStones,enumInterface {
 
     address[] public teachers;
     address[] public students;
+
     address[] public courses;
 
-    mapping(address => bool) isTeacher;
-    mapping(address => bool) isStudent;
-    mapping(address => bool) isCourse;
+    bytes32[] public courseHashes;
+
+
+    mapping(address => bool) public isTeacher;
+    mapping(address => bool) public isStudent;
+    mapping(address => bool) public isCourse;
 
     event teacherRegistered(address teacher);
     event studentRegistered(address student);
-    event courseRegistered(address courseContract, address teacher);
+    event courseLaunched(address courseContract, address teacher);
+
 
     mapping(address => address[]) public coursesByTeacher;
 
@@ -33,15 +43,17 @@ contract BuidlingBlocks is SteppingStones {
         emit studentRegistered(msg.sender);
     }
 
-    function launchCourse(bytes32 courseHash, bytes32[] memory answers) public {
+    function launchCourse(bytes32 courseHash, string memory Name, CourseType _courseType, AgeGroup _ageGroup, bytes32[] memory answers) public {
 
-        Course c = new Course(msg.sender,courseHash, answers);
+        Course c = new Course(msg.sender,courseHash, Name, _courseType, _ageGroup, answers);
         courses.push(address(c));
         coursesByTeacher[msg.sender].push(address(c));
 
-        isCourse[address(c)] == true;
+        isCourse[address(c)] = true;
 
-        emit courseRegistered(address(c), msg.sender);
+        courseHashes.push(courseHash);
+
+        emit courseLaunched(address(c), msg.sender);
     }
 
      function getCoursesByTeacher(address teacher) public view returns(address[] memory courseList){
@@ -56,9 +68,11 @@ contract BuidlingBlocks is SteppingStones {
         return teachers[index];
     }
 
-    function getCourse(uint index)  public view returns (address){
-        return teachers[index];
-    }
+
+
+
+
+
 
     function getTeacherLength() public view returns (uint){
         return teachers.length;
@@ -73,67 +87,80 @@ contract BuidlingBlocks is SteppingStones {
 
 
     //Stones
-    event minting(address, uint);
-    event burning(address, uint);
+    event minted(address, uint);
+    event burnt(address, uint);
 
-    function mint(address recipient, uint value) external {
+    function mint(address recipient, uint value) public {
         require(isCourse[msg.sender]);
         create(recipient,value);
+        emit minted(recipient, value);
     }
 
-    function burn(address recipient, uint value) external {
+    function burn(address sender, uint value) public {
         require(isCourse[msg.sender]);
-        destroy(recipient,value);
+        destroy(sender,value);
+        emit burnt(sender,value);
     }
 
     //Verifiers
 
-
+    function getCourseData(uint index) public view returns(bytes32 courseHash,string memory courseTitle,CourseType courseType, AgeGroup ageGroup) {
+        return Course(courses[index]).getCourseData();
+    }
 
 }
 
-contract Course{
+
+
+contract Course is enumInterface{
 
 
     // hash correct answers
-    string public Name;
+    string public courseTitle;
     BuidlingBlocks BuidlingBlocksContract;
+
+
 
     address public teacher;
 
+    CourseType public courseType;
+    AgeGroup public ageGroup;
+
     bytes32 courseHash;
 
-    constructor (address _teacher, bytes32 _courseHash, bytes32[] memory _answers) public{
+    constructor (address _teacher, bytes32 _courseHash, string memory _courseTitle, CourseType _courseType, AgeGroup _ageGroup, bytes32[] memory _answers) public{
         teacher = _teacher;
         BuidlingBlocksContract = BuidlingBlocks(msg.sender);
-
+        courseTitle = _courseTitle;
         courseHash = _courseHash;
         answers = _answers;
+        courseType = _courseType;
+        ageGroup = _ageGroup;
+        numQuestions = answers.length;
     }
         //teachers
-
+        uint public numQuestions;
         bytes32[] answers;
 
         mapping(address => bytes32[]) responses;
-        mapping(address => uint) testScores;
-        address[] testTakers;
+        mapping(address => uint) public testScores;
+        address[] public testTakers;
 
         mapping(address => bool) hasTakenTest;
 
 
-
-
-
-    function getStudentTestScore(uint testID, address student) public view returns(uint testScore){
+    function getStudentTestScore(address student) public view returns(uint testScore){
         return testScores[student];
     }
 
     function getAllTestScores(uint testID) public view returns(uint[] memory Scores){
 
     }
-
+    
     //students
-    function submitResponses(uint testID, bytes32[] memory _responses) public{
+    event testTaken(address student,uint score,uint maxScore);
+
+    function submitResponses(bytes32[] memory _responses) public{
        require(_responses.length == answers.length);
        require(hasTakenTest[msg.sender]==false);
        responses[msg.sender] = _responses;
@@ -143,19 +170,17 @@ contract Course{
                testScores[msg.sender]+=1;
            }
        }
+       emit testTaken(msg.sender, testScores[msg.sender],_responses.length);
        BuidlingBlocksContract.mint(msg.sender,testScores[msg.sender]);
     }
 
-    function getTestScore(uint testID) public view returns (uint){
+    function getTestScore() public view returns (uint){
         return testScores[msg.sender];
     }
 
-
-
+    function getCourseData() public view returns(bytes32 ,string memory ,CourseType, AgeGroup) {
+        return(courseHash,courseTitle,courseType,ageGroup);
+    }
     //internal contract
-
-
-
-
 
 }
