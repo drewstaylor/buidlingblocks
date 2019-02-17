@@ -1,8 +1,10 @@
 pragma solidity ^0.5.4;
 pragma experimental ABIEncoderV2;
 
-contract BuidlingBlockInterface{
-    enum AgeGroup {one,two,three}
+import "./Stones.sol";
+
+contract SteppingStonesInterface{
+    enum AgeGroup {PreSchool,Elementary,Secondary}
 
     enum CourseStream {Math, Science, Reading}
 
@@ -15,43 +17,51 @@ contract BuidlingBlockInterface{
         string Name;
         AgeGroup ageGroup;
         address studentAddress;
-
     }
 }
 
-contract BuidlingBlocks is BuidlingBlockInterface {
+contract SteppingStones is SteppingStonesInterface,Stones {
 
     address[] public teachers;
     address[] public students;
     address[] public courses;
 
+    mapping(address => bool) isTeacher;
+    mapping(address => bool) isStudent;
+    mapping(address => bool) isCourse;
+
+    event teacherRegistered(address teacher);
+    event studentRegistered(address student);
+    event courseRegistered(address courseContract, address teacher);
+
     mapping(address => address[]) public coursesByTeacher;
 
-    constructor() public {
-
-    }
-    event teacherRegistered(address teacher);
-
     function registerTeacher() public{
+        require(!isTeacher[msg.sender]);
         teachers.push(msg.sender);
+        isTeacher[msg.sender]= true;
         emit teacherRegistered(msg.sender);
     }
 
     function registerStudent() public{
+        require(!isStudent[msg.sender]);
         students.push(msg.sender);
+        isStudent[msg.sender]= true;
+        emit studentRegistered(msg.sender);
     }
 
-    event newCourse(address CourseContract, address Teacher);
     function launchCourse(AgeGroup _ageGroup, CourseStream _courseStream) public {
 
         Course c = new Course(_ageGroup,_courseStream, msg.sender);
         courses.push(address(c));
         coursesByTeacher[msg.sender].push(address(c));
 
-        emit newCourse(address(c), msg.sender);
+        isCourse[address(c)] == true;
+
+        emit courseRegistered(address(c), msg.sender);
     }
 
-     function getCoursesByTeacher(address teacher) public view returns(address[] memory courses){
+     function getCoursesByTeacher(address teacher) public view returns(address[] memory courseList){
         return coursesByTeacher[teacher];
     }
 
@@ -59,11 +69,11 @@ contract BuidlingBlocks is BuidlingBlockInterface {
         return teachers[index];
     }
 
-      function getStudent(uint index)  public view returns (address){
+    function getStudent(uint index)  public view returns (address){
         return teachers[index];
     }
 
-      function getCourse(uint index)  public view returns (address){
+    function getCourse(uint index)  public view returns (address){
         return teachers[index];
     }
 
@@ -77,13 +87,34 @@ contract BuidlingBlocks is BuidlingBlockInterface {
         return courses.length;
     }
 
+
+
+    //Stones
+    event minting(address, uint);
+    event burning(address, uint);
+
+    function mint(address recipient, uint value) external {
+        require(isCourse[msg.sender]);
+        create(recipient,value);
+    }
+
+    function burn(address recipient, uint value) external {
+        require(isCourse[msg.sender]);
+        destroy(recipient,value);
+    }
+
+    //Verifiers
+
+
+
 }
 
-contract Course is BuidlingBlockInterface{
+contract Course is SteppingStonesInterface{
 
 
     // hash correct answers
-    string Name;
+    string public Name;
+    SteppingStones SteppingStonesContract;
 
     AgeGroup ageGroup;
     CourseStream courseStream;
@@ -108,13 +139,14 @@ contract Course is BuidlingBlockInterface{
         address[] testTakers;
     }
 
-
-    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address teacher) public{
+    constructor (AgeGroup _ageGroup, CourseStream _courseStream, address _teacher) public{
         ageGroup = _ageGroup;
         courseStream = _courseStream;
-        teacher = teacher;
+        teacher = _teacher;
+        SteppingStonesContract = SteppingStones(msg.sender);
     }
         //teachers
+
 
     function addStep(bytes32 textHash, bytes32 imageHash) public {
         uint stepIndex = steps.length;
@@ -136,7 +168,6 @@ contract Course is BuidlingBlockInterface{
         tests[testIndex].options = options;
     }
 
-
     function getStudentTestScore(uint testID, address student) public view returns(uint testScore){
         return tests[testID].testScores[student];
     }
@@ -152,14 +183,26 @@ contract Course is BuidlingBlockInterface{
 
     //students
     function submitResponses(uint testID, bytes32[] memory responses) public{
+       require(responses.length == tests[testID].questions.length);
+       require(tests[testID].responses[msg.sender].length==0);
        tests[testID].responses[msg.sender] = responses;
+
+       for(uint i = 0; i<responses.length;i++){
+           if(responses[i]==tests[testID].answers[i]){
+               tests[testID].testScores[msg.sender]+=1;
+           }
+       }
+       SteppingStonesContract.mint(msg.sender,tests[testID].testScores[msg.sender]);
     }
 
     function getTestScore(uint testID) public view returns (uint){
         return tests[testID].testScores[msg.sender];
-
     }
 
-    //all
+    //internal contract
+
+
+
+
 
 }
