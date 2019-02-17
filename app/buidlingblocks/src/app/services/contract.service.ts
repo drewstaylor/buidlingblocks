@@ -165,7 +165,7 @@ export class ContractService {
   public async getCourseData(index) {
     const data = await this.bbContractInstance.methods.getCourseData(index).call({from: window.userAccount});
 	const obj = {
-	  ipfsHash: data[0], 
+	  ipfsHash: this.getIpfsHashFromBytes32(data[0]), 
 	  name: data[1],
       courseType: data[2],
       ageGroup: data[3]
