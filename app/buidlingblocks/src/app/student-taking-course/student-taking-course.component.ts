@@ -12,6 +12,7 @@ export class StudentTakingCourseComponent implements OnInit {
 
   public courseData: any;
   public courseIndex;
+  public courseAddress;
 
   private routerContext: Array<any> = [];
 
@@ -28,7 +29,9 @@ export class StudentTakingCourseComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.courseData = await this.contractService.getCourse(this.courseIndex);
+    this.courseAddress = await this.contractService.getCourse(this.courseIndex);
+    console.log('courseAddress', this.courseAddress);
+    this.courseData = await this.contractService.getCourseObject(this.courseAddress);
     console.log('courseData', this.courseData);
   }
 
