@@ -14,6 +14,7 @@ import { StudentDashboardComponent } from './student-dashboard/student-dashboard
 import { StudentCoursesComponent } from './student-courses/student-courses.component';
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { StudentTakingCourseComponent } from './student-taking-course/student-taking-course.component';
+import { Http } from '@angular/http';
 
 const routes: Routes = [
     {path: '', component: EntryComponent},
@@ -35,7 +36,7 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
-    providers: []
+    providers: [Http]
 })
 
 export class AppRoutingModule { }

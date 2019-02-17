@@ -18,6 +18,19 @@ export class IpfsService {
     //console.log('this.ipfs =>', this.ipfs);
   }
 
+  public read(IpfsHash: string) {
+    // Init IPFS
+    this.bootstrap();
+    // Attempt read stream
+    try {
+      const stream = this.ipfs.get(IpfsHash);
+      return stream;
+    } catch (err) {
+      console.log('Error reading IPFS stream', err)
+      return err;
+    }
+  }
+
   public readFileAsStream(IpfsHash: string) {
     // Init IPFS
     this.bootstrap();
