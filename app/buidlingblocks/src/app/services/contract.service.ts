@@ -113,7 +113,8 @@ export class ContractService {
 	  // console.log("ipfs hash: "+ ipfsHash +" -> "+ ipfsHashBytes32);
 	  const ipfsHashBytes32 = this.getBytes32FromIpfsHash(ipfsHash);
 	  const answerHashesByte32 = answerHashes.map(hash => window.web3.utils.bytesToHex(hash));
-	  return await this.bbContractInstance.methods.launchCourse(
+    console.log('final answers',answerHashesByte32);
+    return await this.bbContractInstance.methods.launchCourse(
       ipfsHashBytes32,
       courseTitle.toString(),
       parseInt(courseType),
