@@ -10,7 +10,7 @@ import { GraphService } from '../services/graph.service';
 })
 export class CoursesListComponent implements OnInit {
 
-  public courseList: Array<any>;
+  public courseList: Array<any> = [];
   public courses: Array<any> = [];
 
   constructor(

@@ -15,11 +15,20 @@ declare let window: any;
 })
 export class StudentTakingCourseComponent implements OnInit {
 
-  public courseData: any;
+  public courseData: any = {
+    name: null,
+    ageGroup: null,
+    courseType: null
+  };
+
+  public courseMaterial: any = {
+    steps: null,
+    exams: null
+  };
+
   public courseIndex;
   public courseAddress;
   public ipfs;
-  public courseMaterial: any;
 
   private routerContext: Array<any> = [];
 
