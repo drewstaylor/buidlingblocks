@@ -23,8 +23,16 @@
           <img [src]="step.img">
       </div>
     </div>
+    <div class="container">
+      <h3>Course Review:</h3>
+    </div>
     <div class="container" *ngFor="let exam of courseMaterial.exams; index as i;" style="margin-bottom:2.5em;">
-        <img [src]="exam.file">
+      <!--
+      <a [href]="exam.file" download="course_review_exam_{{i + 1}}.pdf">Download Course Review</a>
+      <a [href]="exam.file" target="_blank">Download Exam</a>
+      <button (click)="downloadPDF(exam.file)" class="btn btn-primary">Download Course Review</button>
+      -->
+      <a [href]="exam.file" download="course_review_exam_{{i + 1}}.pdf">Download Course Review</a>
     </div>
   </div>
 </div>
