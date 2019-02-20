@@ -3,10 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
-//import { Http, ResponseContentType, RequestOptions } from '@angular/http';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { map } from "rxjs/operators";
 
 declare let window: any;
 
@@ -52,14 +50,16 @@ export class StudentTakingCourseComponent implements OnInit {
     let fileHash = null;
     let context = null;
     this.courseData = await this.contractService.getCourseData(this.courseIndex);
+    this.courseData.safeFilename = this.getSafeFilename(this.courseData.name);
+    
     console.log('courseData',this.courseData);
 
+    // Load IPFS data
     let stream = this.ipfsService.readFileAsStream(this.courseData.ipfsHash);
-
     stream.on('data', (file) => {
       // write the file's path and contents to standard out
       if(file.type !== 'dir') {
-        file.content.on('data', (data) => {
+        file.content.on('data', (data: any) => {
           this.courseMaterial = JSON.parse(data.toString());
           console.log('courseMaterial', this.courseMaterial);
           // Generate steps images
@@ -108,6 +108,11 @@ export class StudentTakingCourseComponent implements OnInit {
     window.setTimeout(() => {
       this.courseMaterial.exams[index].file = this.getSantizeUrl(url);
     }, 0);
+  }
+
+  public getSafeFilename(filename: string) {
+    let safeFilename = filename.replace(/[^\w\s]/gi, '');
+    return safeFilename;
   }
 
   private getSantizeUrl(url : string) {
