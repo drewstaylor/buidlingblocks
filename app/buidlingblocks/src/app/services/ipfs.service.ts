@@ -18,12 +18,13 @@ export class IpfsService {
     //console.log('this.ipfs =>', this.ipfs);
   }
 
-  public read(IpfsHash: string) {
+  public cat(IpfsHash: string) {
     // Init IPFS
     this.bootstrap();
     // Attempt read stream
     try {
-      const stream = this.ipfs.get(IpfsHash);
+      const stream = this.ipfs.cat(IpfsHash);
+      //console.log('ipfs.get', stream);
       return stream;
     } catch (err) {
       console.log('Error reading IPFS stream', err)
@@ -37,6 +38,7 @@ export class IpfsService {
     // Attempt read stream
     try {
       const stream = this.ipfs.getReadableStream(IpfsHash);
+      //console.log('ipfs.getReadableStream', stream);
       return stream;
     } catch (err) {
       console.log('Error reading IPFS stream', err)

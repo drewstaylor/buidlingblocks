@@ -66,13 +66,13 @@ export class StudentTakingCourseComponent implements OnInit {
           for (var i = 0; i < this.courseMaterial.steps.length; i++) {
             fileHash = this.courseMaterial.steps[i].file;
             context = 'steps';
-            this.createImage(fileHash, context, i);
+            this.createImage(fileHash, i);
           }
           // Generate exam images
           for (var j = 0; j < this.courseMaterial.exams.length; j++) {
             fileHash = this.courseMaterial.exams[j].file;
             context = 'exams';
-            this.createImage(fileHash, context, j);
+            this.createPDF(fileHash, j);
           }
         })
         file.content.resume()
@@ -80,46 +80,34 @@ export class StudentTakingCourseComponent implements OnInit {
     });
   }
 
-  createImage(ipfsHash: string, context: string, index: number) {
+  async createImage(ipfsHash: string, index: number) {
     let blob = null;
     let img = null;
     let url = null;
-    let stream = this.ipfsService.readFileAsStream(ipfsHash);
-    stream.on('data', (file) => {
-      if(file.type !== 'dir') {
-        file.content.on('data', (data) => {
-          switch (context) {
-            case 'steps':
-              // Declare blob
-              blob = new window.Blob([data]);
-              // Declare URL for data blob
-              url = window.URL.createObjectURL(blob);
-              // Create image / document blob
-              img = new Image();
-              img.src = url;
-              window.setTimeout(() => {
-                this.courseMaterial.steps[index].img = this.getSantizeUrl(img.src);
-              }, 0);
-              break;
-            case 'exams':
-              // Declare blob
-              blob = new window.Blob([data], {type: "octet/stream"});
-              // Declare URL for data blob
-              url = window.URL.createObjectURL(blob);
-              window.setTimeout(() => {
-                this.courseMaterial.exams[index].file = this.getSantizeUrl(url);
-              }, 0);
-              break;
-          }
-        })
-        file.content.resume()
-      }
-    });
+    const data = await this.ipfsService.cat(ipfsHash);
+    // Declare blob
+    blob = new window.Blob([data]);
+    // Declare URL for data blob
+    url = window.URL.createObjectURL(blob);
+    // Create image / document blob
+    img = new Image();
+    img.src = url;
+    window.setTimeout(() => {
+      this.courseMaterial.steps[index].img = this.getSantizeUrl(img.src);
+    }, 0);
   }
 
-  public downloadPDF (filePath) {
-    console.log('download?', filePath);
-    return this.http.get(filePath, { responseType: 'blob' });
+  async createPDF(ipfsHash: string, index: number) {
+    let blob = null;
+    let url = null;
+    const pdf = await this.ipfsService.cat(ipfsHash);
+    // Declare blob
+    blob = new window.Blob([pdf], {type: "application/pdf"});
+    // Declare URL for data blob
+    url = window.URL.createObjectURL(blob);
+    window.setTimeout(() => {
+      this.courseMaterial.exams[index].file = this.getSantizeUrl(url);
+    }, 0);
   }
 
   private getSantizeUrl(url : string) {
