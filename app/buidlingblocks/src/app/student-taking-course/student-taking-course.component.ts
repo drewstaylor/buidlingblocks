@@ -23,7 +23,9 @@ export class StudentTakingCourseComponent implements OnInit {
 
   public courseMaterial: any = {
     steps: null,
-    exams: null
+    exams: null,
+    answers: null,
+    studentAnswers: null
   };
 
   public courseIndex;
@@ -48,7 +50,6 @@ export class StudentTakingCourseComponent implements OnInit {
 
   async ngOnInit() {
     let fileHash = null;
-    let context = null;
     this.courseData = await this.contractService.getCourseData(this.courseIndex);
     this.courseData.safeFilename = this.getSafeFilename(this.courseData.name);
     
@@ -65,15 +66,15 @@ export class StudentTakingCourseComponent implements OnInit {
           // Generate steps images
           for (var i = 0; i < this.courseMaterial.steps.length; i++) {
             fileHash = this.courseMaterial.steps[i].file;
-            context = 'steps';
             this.createImage(fileHash, i);
           }
           // Generate exam images
           for (var j = 0; j < this.courseMaterial.exams.length; j++) {
             fileHash = this.courseMaterial.exams[j].file;
-            context = 'exams';
             this.createPDF(fileHash, j);
           }
+          // Generate student answer models
+          this.courseMaterial.studentAnswers = new Array(this.courseMaterial.answers.length);
         })
         file.content.resume()
       }
