@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
+import { HasherService } from '../services/hasher.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 declare let window: any;
@@ -40,6 +41,7 @@ export class StudentTakingCourseComponent implements OnInit {
     private authService: AuthService,
     private contractService: ContractService,
     private ipfsService: IpfsService,
+    private hasherService: HasherService,
     private sanitizer: DomSanitizer,
     private changeDetector: ChangeDetectorRef
   ) {

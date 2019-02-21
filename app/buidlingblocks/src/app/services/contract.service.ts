@@ -16,7 +16,6 @@ export class ContractService {
   private initialized: boolean = false;
 
   // Blockchain instance parameters
-
   private bbContractAddress: string = '0x174c191845B18c8bF568830bFF8b00820FB610E4';
   private bbContractInstance;
   public network: string = "rinkeby";
@@ -112,7 +111,7 @@ export class ContractService {
 	  // console.log("ipfs hash: "+ ipfsHash +" -> "+ ipfsHashBytes32);
 	  const ipfsHashBytes32 = this.getBytes32FromIpfsHash(ipfsHash);
 	  const answerHashesByte32 = answerHashes.map(hash => window.web3.utils.bytesToHex(hash));
-    console.log('final answers',answerHashesByte32);
+    console.log('Answers uploaded to EVM =>', answerHashesByte32);
     return await this.bbContractInstance.methods.launchCourse(
       ipfsHashBytes32,
       courseTitle.toString(),
