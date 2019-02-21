@@ -1,3 +1,33 @@
-<p>
-  teacher-view-course-data works!
-</p>
+<div class="content-wrapper container-fluid">
+  <a routerLink="/teacher/dashboard">Back to Dashboard</a>
+  <div class="container">
+    <h1 *ngIf="courseData">{{ courseData.name }}</h1>
+    <h5>
+      Suggested Age Group: 
+      <span *ngIf="courseData.ageGroup == 0">Preschool</span>
+      <span *ngIf="courseData.ageGroup == 1">Primary School</span>
+      <span *ngIf="courseData.ageGroup == 2">Secondary School</span>
+    </h5>
+    <div>
+      <h5>
+        Category: 
+        <span *ngIf="courseData.courseType == 0">MATH</span>
+        <span *ngIf="courseData.courseType == 1">READING</span>
+        <span *ngIf="courseData.courseType == 2">SCIENCE</span>
+      </h5>
+    </div>
+    <div class="container" *ngFor="let step of courseMaterial.steps; index as i;">
+      <h5>{{ step.title }}:</h5>
+      <p>{{ step.body }}</p>
+      <div class="container" *ngIf="step.img">
+          <img [src]="step.img">
+      </div>
+    </div>
+    <div class="container">
+      <h3>Course Review:</h3>
+    </div>
+    <div class="container" *ngFor="let exam of courseMaterial.exams; index as i;" style="margin-bottom:2.5em;">
+      <a [href]="exam.file" download="{{ courseData.safeFilename }}" *ngIf="exam.file">Download Course Review</a>
+    </div>
+  </div>
+</div>

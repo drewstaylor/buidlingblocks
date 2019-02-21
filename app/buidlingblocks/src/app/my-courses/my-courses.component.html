@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row" *ngFor="let course of courses; index as i;">
       <p>
-          {{ i + 1 }})<a routerLink="/teacher/course/{{ course }}" style="cursor: pointer;" > {{ course }}
+          {{ i + 1 }})<a routerLink="/teacher/course/{{ course.address }}" style="cursor: pointer;" > {{ course.title }}
           <!--
           <span *ngIf="courseList[1][i] == 0"> - MATH</span>
           <span *ngIf="courseList[1][i] == 1"> - READING</span>

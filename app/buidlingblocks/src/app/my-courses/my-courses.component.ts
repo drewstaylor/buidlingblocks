@@ -12,7 +12,7 @@ declare let window: any;
 })
 export class MyCoursesComponent implements OnInit {
 
-  public courses: Array<string> = [];
+  public courses: Array<any> = [];
   public teacher: string;
 
   constructor(
@@ -35,7 +35,18 @@ export class MyCoursesComponent implements OnInit {
 
   public async loadCourses () {
     // Load courses list for requesting teacher
-    this.courses = await this.contractService.getCoursesByTeacher(window.userAccount);
+    let courses = await this.contractService.getCoursesByTeacher(window.userAccount);
+    for (let i = 0; i < courses.length; i++) {
+      let course = await this.loadCourse(courses[i]);
+      this.courses.push({
+        address: courses[i],
+        title: course[1],
+        ageGroup: course[3],
+        courseType: course[2],
+        ipfsHash: course[0]
+      });
+    }
+    console.log('this.courses =>', this.courses);
   }
 
   public async loadCourse (courseAddress: string) {

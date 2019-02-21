@@ -31,10 +31,6 @@ export class ChildContractService {
   };
 
   bootstrap(): void {
-    if (this.initialized) {
-      return;
-    }
-
     // Get contract
     const data = {
       address: this.ContractAddress,
@@ -53,6 +49,8 @@ export class ChildContractService {
    * @param {String} contractAddress: The current course being evaluated
    */
   public async getCourseData (contractAddress: string) {
+    this.ContractAddress = contractAddress;
+    this.bootstrap();
     this.setContractAddress(contractAddress);
     return this.ContractInstance
               .methods
@@ -67,6 +65,8 @@ export class ChildContractService {
    * @param {Array} answers: An array of raw test answers to be converted to Bytes32 and compared with master test answers record
    */
   public async submitTestAnswers (contractAddress: string, answers: Array<any>) {
+    this.ContractAddress = contractAddress;
+    this.bootstrap();
     this.setContractAddress(contractAddress);
     // Create SHA256 hashes
     let answersSha256 = [];
@@ -93,6 +93,8 @@ export class ChildContractService {
    * @return {}: uint representing number of correct test answers
    */
   public async getTestScore (contractAddress: string) {
+    this.ContractAddress = contractAddress;
+    this.bootstrap();
     this.setContractAddress(contractAddress);
     return await this.ContractInstance
                     .methods
