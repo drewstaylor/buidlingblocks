@@ -113,6 +113,14 @@ contract BuidlingBlocks is SteppingStones,enumInterface {
         return Course(courses[index]).getCourseData();
     }
 
+    function getCourseDataByAddress(address) {
+        // Find needle in haystack
+        for (uint i=0; i < courses.length; i++) {
+            if (courses[i] === address) 
+                return courses[i]).getCourseData();
+        }
+    }
+
 
 
 }
