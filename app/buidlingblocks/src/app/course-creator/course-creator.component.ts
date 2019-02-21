@@ -115,9 +115,6 @@ export class CourseCreatorComponent implements OnInit {
 
   public async submitCourse() {
     console.log('Submitting course...', this.courseContent);
-    
-    // TODO: Submit course to Ethereum network through contract service
-    
     // Send a JSON Stringified version of courseContent to IPFS
     let jsonData = JSON.stringify(this.courseContent);
     const buffer = Buffer.from(jsonData);
@@ -137,7 +134,7 @@ export class CourseCreatorComponent implements OnInit {
       this.hashedAnswers.push(answerHashed);
     }
     console.log('Array of Hashed Correct Answers', this.hashedAnswers);
-
+    // Submit course
     let courseLaunch = await this.contractService.launchCourse(
       this.courseSubmission,
       this.courseContent.courseTitle,
