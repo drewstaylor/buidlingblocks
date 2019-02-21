@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
 import { IpfsService } from '../services/ipfs.service';
-import { HttpClient } from "@angular/common/http";
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 declare let window: any;
@@ -41,7 +41,7 @@ export class StudentTakingCourseComponent implements OnInit {
     private contractService: ContractService,
     private ipfsService: IpfsService,
     private sanitizer: DomSanitizer,
-    private http: HttpClient
+    private changeDetector: ChangeDetectorRef
   ) {
     this.authService.login(false);
     this.routerContext = this.route.snapshot.url;
@@ -95,6 +95,7 @@ export class StudentTakingCourseComponent implements OnInit {
     img.src = url;
     window.setTimeout(() => {
       this.courseMaterial.steps[index].img = this.getSantizeUrl(img.src);
+      this.changeDetector.detectChanges();
     }, 0);
   }
 
@@ -108,6 +109,7 @@ export class StudentTakingCourseComponent implements OnInit {
     url = window.URL.createObjectURL(blob);
     window.setTimeout(() => {
       this.courseMaterial.exams[index].file = this.getSantizeUrl(url);
+      this.changeDetector.detectChanges();
     }, 0);
   }
 

@@ -204,7 +204,7 @@ export class ContractService {
    * ]
    */
   public async getCoursesByTeacher(address: string)  {
-      address = (address) ? address : window.userAccount;
+    address = (address) ? address : window.userAccount;
     const data = await this.bbContractInstance.methods.getCoursesByTeacher(address).call({from: window.userAccount});
     return data;
   }

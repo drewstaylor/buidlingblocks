@@ -19,7 +19,7 @@
     <div class="container" *ngFor="let step of courseMaterial.steps; index as i;">
       <h5>{{ step.title }}:</h5>
       <p>{{ step.body }}</p>
-      <div class="container">
+      <div class="container" *ngIf="step.img">
           <img [src]="step.img">
       </div>
     </div>
@@ -27,7 +27,7 @@
       <h3>Course Review:</h3>
     </div>
     <div class="container" *ngFor="let exam of courseMaterial.exams; index as i;" style="margin-bottom:2.5em;">
-      <a [href]="exam.file" download="{{ courseData.safeFilename }}">Download Course Review</a>
+      <a [href]="exam.file" download="{{ courseData.safeFilename }}" *ngIf="exam.file">Download Course Review</a>
     </div>
   </div>
 </div>
