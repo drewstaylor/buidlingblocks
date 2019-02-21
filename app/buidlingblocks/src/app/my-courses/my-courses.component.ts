@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ContractService } from '../services/contract.service';
+import { ChildContractService } from '../services/child-contract.service';
 
 declare let window: any;
 
@@ -11,12 +12,13 @@ declare let window: any;
 })
 export class MyCoursesComponent implements OnInit {
 
-  public courses: any;
+  public courses: Array<string> = [];
   public teacher: string;
 
   constructor(
     private authService: AuthService,
-    private contractService: ContractService
+    private contractService: ContractService,
+    private courseContractService: ChildContractService
   ) { 
     // ...
   }
@@ -34,7 +36,11 @@ export class MyCoursesComponent implements OnInit {
   public async loadCourses () {
     // Load courses list for requesting teacher
     this.courses = await this.contractService.getCoursesByTeacher(window.userAccount);
-    console.log('courses =>', this.courses);
+  }
+
+  public async loadCourse (courseAddress: string) {
+    let courseData = await this.courseContractService.getCourseData(courseAddress);
+    return courseData;
   }
 
 }

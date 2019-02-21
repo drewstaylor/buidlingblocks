@@ -46,13 +46,27 @@ export class ChildContractService {
     this.init();
   };
 
-  // Contract calls
+  // Contract Calls
+
+  /**
+   * Get data for a givem Course address
+   * @param {String} contractAddress: The current course being evaluated
+   */
+  public async getCourseData (contractAddress: string) {
+    this.setContractAddress(contractAddress);
+    return this.ContractInstance
+              .methods
+              .getCourseData()
+              .call({from: window.userAccount});
+  }
+
 
   /**
    * Submit test answers for a student to be graded by contract
    * @param {String} contractAddress: The current course being evaluated
+   * @param {Array} answers: An array of raw test answers to be converted to Bytes32 and compared with master test answers record
    */
-  public async submitTestAnswers (contractAddress: string, answers: Array<string>) {
+  public async submitTestAnswers (contractAddress: string, answers: Array<any>) {
     this.setContractAddress(contractAddress);
     // Create SHA256 hashes
     let answersSha256 = [];
@@ -68,7 +82,8 @@ export class ChildContractService {
     // Compare test score with master answers record 
     // stored on the contract 
     return await this.ContractInstance
-                    .methods.submitResponses(answerHashesByte32)
+                    .methods
+                    .submitResponses(answerHashesByte32)
                     .call({from: window.userAccount});
   }
 
@@ -80,9 +95,12 @@ export class ChildContractService {
   public async getTestScore (contractAddress: string) {
     this.setContractAddress(contractAddress);
     return await this.ContractInstance
-                    .methods.getStudentTestScore(window.userAccount)
+                    .methods
+                    .getStudentTestScore(window.userAccount)
                     .call({from: window.userAccount});
   }
+
+  // Utility / Helper Functions
 
   // Initialize provider bridge
   private init = function (): void {
