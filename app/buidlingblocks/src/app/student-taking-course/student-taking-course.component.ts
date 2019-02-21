@@ -111,7 +111,7 @@ export class StudentTakingCourseComponent implements OnInit {
     }, 0);
   }
 
-  public getSafeFilename(filename: string) {
+  private getSafeFilename(filename: string) {
     let safeFilename = filename.replace(/[^\w\s]/gi, '');
     return safeFilename;
   }
