@@ -12,6 +12,7 @@ export class HasherService {
   public hash(plainText): string {
     let hashRaw = CryptoJS.HmacSHA256(plainText, environment.seed);
     let hashInBase64 = CryptoJS.enc.Base64.stringify(hashRaw);
-	return (hashInBase64.substring(0,32)); // truncate to 32 bytes to make Ethereum happy
+    // truncate to 32 bytes to make Ethereum happy
+	  return (hashInBase64.substring(0,32));
   }
 }
