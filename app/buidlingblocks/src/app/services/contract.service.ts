@@ -18,7 +18,6 @@ export class ContractService {
   // Blockchain instance parameters
 
   private bbContractAddress: string = '0x174c191845B18c8bF568830bFF8b00820FB610E4';
-  private launchCourseContractAddress: string = '0x18128d6B244fB471D21FD0c298A13Da5668178e1';
   private bbContractInstance;
   public network: string = "rinkeby";
   public rpcEndpoint: string = "https://rinkeby.infura.io/";
@@ -165,13 +164,13 @@ export class ContractService {
    */
   public async getCourseData(index) {
     const data = await this.bbContractInstance.methods.getCourseData(index).call({from: window.userAccount});
-	const obj = {
-	  ipfsHash: this.getIpfsHashFromBytes32(data[0]), 
-	  name: data[1],
-      courseType: data[2],
-      ageGroup: data[3]
-	};
-	return obj;
+    const obj = {
+      ipfsHash: this.getIpfsHashFromBytes32(data[0]), 
+      name: data[1],
+        courseType: data[2],
+        ageGroup: data[3]
+    };
+    return obj;
   };
 
   /**
@@ -194,15 +193,32 @@ export class ContractService {
   }
 
   /**
+   * Get courses for a specific teacher
+   * 
+   * XXX: We need this function to return the course names to show in the UI
+   * 
+   * @return {Array} - An array of contract addresses. Ex:
+   * [
+   *  "0x082A9c123E19E8e706907468b7E09357B7C50bF9", 
+   *  "0xa1603e1a92EEdb2657B92aEDcE77543181a0De39"
+   * ]
+   */
+  public async getCoursesByTeacher(address: string)  {
+      address = (address) ? address : window.userAccount;
+    const data = await this.bbContractInstance.methods.getCoursesByTeacher(address).call({from: window.userAccount});
+    return data;
+  }
+
+  /**
    * Getters (by index)
    */
-  public async getCourse(index) {
+  public async getCourse(index: number) {
     return await this.bbContractInstance.methods.courses(index).call({from: window.userAccount});
   }
-  public async getTeacher(index) {
+  public async getTeacher(index: number) {
     return await this.bbContractInstance.methods.teachers(index).call({from: window.userAccount});
   }
-  public async getStudent(index) {
+  public async getStudent(index: number) {
     return await this.bbContractInstance.methods.students(index).call({from: window.userAccount});
   }
 
@@ -211,17 +227,17 @@ export class ContractService {
    *
    * @param address - the address of the deployed course
    */
-  public async getCourseObject(address) {
+  public async getCourseObject(address: string) {
 
     const courseInstance = new window.web3.eth.Contract(this.Contract.courseAbi, address);
 
-	let obj = { courseHash: null, teacher: null, name: null };
+    let obj = { courseHash: null, teacher: null, name: null };
 
-	obj.courseHash = courseInstance.methods.courseHash().call({from: window.userAccount});
-	obj.teacher = courseInstance.methods.teacher().call({from: window.userAccount});
-	obj.name = courseInstance.methods.name().call({from: window.userAccount});
+    obj.courseHash = courseInstance.methods.courseHash().call({from: window.userAccount});
+    obj.teacher = courseInstance.methods.teacher().call({from: window.userAccount});
+    obj.name = courseInstance.methods.name().call({from: window.userAccount});
 
-	return obj;
+    return obj;
   }
 
 }

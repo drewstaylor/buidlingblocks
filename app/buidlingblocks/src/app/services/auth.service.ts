@@ -46,6 +46,25 @@ export class AuthService {
 		}
 	}
 
+	public loginAsPromise() {
+		let authPromise = new Promise((resolve, reject) => {
+			try {
+				let attempt = this.fortmatic.user.login().then(() => {
+					this.web3.eth.getAccounts().then((accounts) => {
+						window.userAccount = accounts[0]; // TODO: review
+						console.log("!!!! setting window.userAccount: "+ window.userAccount);
+						// Declare resolution
+						resolve(accounts[0])
+					});
+				});
+			} catch (err) {
+				console.log('error authenticating user', err);
+			}
+		});
+		// Return resolvable Promise
+		return authPromise;
+	}
+
 	public logout(): boolean {
 		try {
 			this.fortmatic.user.logout();
