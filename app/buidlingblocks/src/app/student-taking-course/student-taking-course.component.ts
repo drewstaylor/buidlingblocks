@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -138,6 +138,13 @@ export class StudentTakingCourseComponent implements OnInit {
     this.courseMaterial.unsubmittedTestGrade = this.toUnsubmittedGrade(unsubmittedTestScore.length, correctAnswers);;
     // Reset test form
     //this.courseMaterial.studentAnswers = new Array(this.courseMaterial.answers.length);
+    // Scroll to test results
+    setTimeout( () => {
+      window.scrollTo({ 
+        top: (window.scrollY + 400),
+        behavior: "smooth" 
+      });
+    }, 0);
   }
 
   private getSafeFilename(filename: string) {

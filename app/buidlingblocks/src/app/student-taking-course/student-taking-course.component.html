@@ -88,7 +88,7 @@
 </div>
 
 <!-- Show Unverified Test Results -->
-<div class="content-wrapper container-fluid" *ngIf="courseMaterial.unverifiedTestScores">
+<div id="unverified-results" class="content-wrapper container-fluid" *ngIf="courseMaterial.unverifiedTestScores">
   <h5>Your Test Scores:</h5>
   <div *ngFor="let score of courseMaterial.unverifiedTestScores; index as i;" style="margin-bottom:0.5em;">
     <p>
