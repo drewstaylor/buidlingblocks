@@ -31,3 +31,54 @@
     </div>
   </div>
 </div>
+
+<!-- Course Review Input -->
+<div class="content-wrapper container-fluid">
+  <h3>Write your answers to the course review questions in the fields below:</h3>
+  <div class="container row" *ngFor="let answer of courseMaterial.answers; index as i;" style="margin-bottom:2.5em;">
+    <!--
+    <option value="0">Multiple Choice</option>
+    <option value="1">True or False</option>
+    <option value="3">Mathematical / Numerical</option>
+    -->
+    <!-- Multiple Choice -->
+    <p>Question #{{ i + 1 }}:</p>
+    <input
+      [(ngModel)]="answer.value"
+      type="text"
+      name="student-answers-{{i}}"
+      class="form-control" 
+      placeholder="Answer {{i + 1}}"
+      maxlength="1"
+      *ngIf="answer.type == 0"
+      readonly
+      required
+    >
+
+    <!-- True or False -->
+    <select       
+      [(ngModel)]="answer.value"
+      name="student-answers-{{i}}"
+      class="form-control" 
+      *ngIf="answer.type == 1"
+      readonly
+    >
+      <option value="-1">Select an answer</option>
+      <option value="1" [selected]="answer.value == 1">True</option>
+      <option value="0" [selected]="answer.value == 0">False</option>
+    </select>
+
+    <!-- Mathematical / Numerical -->
+    <input
+      [(ngModel)]="answer.value"
+      type="number"
+      placeholder="Answer {{i + 1}}"
+      name="student-answers-{{i}}"
+      class="form-control" 
+      *ngIf="answer.type == 3"
+      readonly
+      required
+    >
+
+  </div>
+</div>
