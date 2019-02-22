@@ -76,6 +76,47 @@
       *ngIf="answer.type == 3"
       required
     >
+  </div>
+</div>
 
+<!-- Check Test Results (Dry Run) -->
+<div class="content-wrapper container-fluid">
+  <h3>Check Test Results:</h3>
+  <p>
+    <button class="btn btn-primary" (click)="checkTestResults();">Go!</button>
+  </p>
+</div>
+
+<!-- Show Unverified Test Results -->
+<div class="content-wrapper container-fluid" *ngIf="courseMaterial.unverifiedTestScores">
+  <h5>Your Test Scores:</h5>
+  <div *ngFor="let score of courseMaterial.unverifiedTestScores; index as i;" style="margin-bottom:0.5em;">
+    <p>
+      Question {{ i + 1 }}:
+      <span *ngIf="score == 0"> Incorrect</span>
+      <span *ngIf="score == 1"> Correct</span>
+    </p>
+  </div>
+</div>
+
+<!-- Show Unverified Test Grading -->
+<div class="content-wrapper container-fluid" *ngIf="courseMaterial.unsubmittedTestGrade">
+  <h5>Grading:</h5>
+  <div style="margin-bottom:2.5em;">
+    <div class="unsubmitted-grade">
+      <p>
+        <strong>Score: </strong>{{ courseMaterial.unsubmittedTestGrade.result }}
+      </p>
+    </div>
+    <div class="unsubmitted-grade">
+      <p>
+        <strong>Result: </strong>{{ courseMaterial.unsubmittedTestGrade.totalCorrectAnswers }} / {{ courseMaterial.unsubmittedTestGrade.totalQuestions }}
+      </p>
+    </div>
+    <div class="unsubmitted-grade">
+      <p>
+        <strong>Grade: </strong>{{ courseMaterial.unsubmittedTestGrade.grade }} - {{ courseMaterial.unsubmittedTestGrade.remark }}
+      </p>
+    </div>
   </div>
 </div>
