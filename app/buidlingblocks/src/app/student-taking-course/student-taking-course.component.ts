@@ -81,6 +81,11 @@ export class StudentTakingCourseComponent implements OnInit {
           }
           // Generate student answer models
           this.courseMaterial.studentAnswers = new Array(this.courseMaterial.answers.length);
+          for (let i = 0; i < this.courseMaterial.answers.length; i++) {
+            if (this.courseMaterial.answers[i].type == 1) {
+              this.courseMaterial.studentAnswers[i] = -1;
+            }
+          }
         })
         file.content.resume()
       }
