@@ -117,7 +117,10 @@
                 >
             </p>
             <div class="col-sm label">
-              <div *ngFor="let answer of courseContent.answers; index as j;" style="margin-bottom:0.5em;">
+              <div *ngFor="let answer of courseContent.answers; index as j;" style="margin-bottom:2.5em;">
+                  <p>
+                    <strong>Question #{{j}}:</strong>
+                  </p>
                   <select 
                     name="answer-type-{{j}}"
                     [(ngModel)]="courseContent.answers[j].type"
