@@ -165,7 +165,6 @@ export class CourseCreatorComponent implements OnInit {
    */
   public setCorrectMultipleChoiceAnswer(question: number, correctChoice: string): void {
     this.courseContent.answers[question].choices[parseInt(correctChoice)].isCorrect = true;
-    console.log(this.courseContent.answers[question]);
   }
 
   public async submitCourse() {
