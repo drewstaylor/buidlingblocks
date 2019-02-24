@@ -125,6 +125,7 @@
                     name="answer-type-{{j}}"
                     [(ngModel)]="courseContent.answers[j].type"
                     class="form-control"
+                    (change)="answerTypeSelected(j, $event.target.value)"
                   >
                     <option value="-1">Select an answer type</option>
                     <option value="{{ANSWER_TYPE_MULTIPLE_CHOICE}}">Multiple Choice</option>
@@ -177,7 +178,7 @@
                     class="form-control"
                     *ngIf="courseContent.answers[j].type == ANSWER_TYPE_TRUE_FALSE"
                   >
-                    <option value="-1" selected>Select an answer</option>
+                    <option value="-1">Select an answer</option>
                     <option value="1">True</option>
                     <option value="0">False</option>
                   </select>

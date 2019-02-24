@@ -167,6 +167,17 @@ export class CourseCreatorComponent implements OnInit {
     this.courseContent.answers[question].choices[parseInt(correctChoice)].isCorrect = true;
   }
 
+  /**
+   * If selected answer type is True / False set -1 so the placeholder option is displayed
+   * @param question {Number}: The index of the target question to initialize
+   * @param selectedAnswerType: {String}: String format of answer type enum
+   */
+  public answerTypeSelected(question: number, selectedAnswerType: string) {
+    if (parseInt(selectedAnswerType) === this.ANSWER_TYPE_TRUE_FALSE) {
+      this.courseContent.answers[question].value = -1;
+    }
+  }
+
   public async submitCourse() {
     console.log('Submitting course...', this.courseContent);
     // Send a JSON Stringified version of courseContent to IPFS
