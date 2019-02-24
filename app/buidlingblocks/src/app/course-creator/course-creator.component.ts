@@ -15,16 +15,20 @@ declare let window: any;
   styleUrls: ['./course-creator.component.css']
 })
 export class CourseCreatorComponent implements OnInit {
-  /**
-   * AGE GROUPS ENUM:
-   * 0 = Preschool
-   * 1 = Elementary
-   * 2 = Secondary
-   */
   readonly AGE_GROUPS = ['preschool', 'elemntary', 'secondary'];
 
   // Form elements
-	@ViewChild('courseForm') courseForm: NgForm;
+  @ViewChild('courseForm') courseForm: NgForm;
+  
+  public readonly ANSWER_TYPE_MULTIPLE_CHOICE: number = 0;
+  public readonly ANSWER_TYPE_TRUE_FALSE: number = 1;
+  public readonly ANSWER_TYPE_MATH: number = 2;
+  public readonly AGE_GROUP_PRESCHOOL: number = 0;
+  public readonly AGE_GROUP_ELEMENTARY: number = 1;
+  public readonly AGE_GROUP_SECONDARY: number = 2;
+  public readonly COURSE_TYPE_MATH: number = 0;
+  public readonly COURSE_TYPE_READING: number = 1;
+  public readonly COURSE_TYPE_SCIENCE: number = 2;
 
   public courseContent = {
     courseTitle: null,
@@ -106,11 +110,62 @@ export class CourseCreatorComponent implements OnInit {
     });
   };
 
-  arrayMaker(n: number): void {
-    this.courseContent.answers = [];
-    for (var i = 0; i < n; i++) {
-      this.courseContent.answers.push({type: -1, value: null});
+  /**
+   * Utility function to dynamically resize the number of form fields for a course creation
+   * form. Takes the resize number and form context as arguments
+   * @param n {Number}: A give number n will be set as the new total on the target context
+   * @param context {String}: The form element to be resized
+   * @param index {Number}: If parsing a single value inside an array, use this index to target the single array value
+   */
+  arrayMaker(n: number, context: string, index: number): void {
+    switch (context) {
+      case 'examQuestions':
+        switch (n < this.courseContent.answers.length) {
+          // Remove elements from the array
+          case true:
+            this.courseContent.answers = this.courseContent.answers.slice(0, n);
+            break;
+          // Add elements to the array without overwriting
+          // any currently declared values
+          default:
+            this.courseContent.answers = (this.courseContent.answers.length) ? this.courseContent.answers : [];
+            for (let i = 0; i < n; i++) {
+              if (!this.courseContent.answers[i])
+                this.courseContent.answers.push({type: -1, value: null, choices: null});
+            }
+        }
+        break;
+      case 'multipleChoiceOptions':
+        // If null array (length undefined)
+        if (!this.courseContent.answers[index].choices)
+          this.courseContent.answers[index].choices = [];
+
+        switch (n < this.courseContent.answers[index].choices.length) {
+          // Remove elements from the array
+          case true:
+            this.courseContent.answers[index].choices = this.courseContent.answers[index].choices.slice(0, n);
+            break;
+          // Add elements to the array without overwriting
+          // any currently declared values
+          default:
+            this.courseContent.answers[index].choices = (this.courseContent.answers[index].choices) ? this.courseContent.answers[index].choices : [{isCorrect: false, value: null}];
+            for (let i = 0; i < n; i++) {
+              if (!this.courseContent.answers[index].choices[i])
+                this.courseContent.answers[index].choices.push({isCorrect: false, value: null});
+            }
+        }
+        break;
     }
+  }
+
+  /**
+   * Sets the correct answer of a multiple choice question
+   * @param question {Number}: The index of the target question to set the correct answer on
+   * @param correctChoice {Number}: The index of the target multiple choice option to set as the correct answer for a given question
+   */
+  public setCorrectMultipleChoiceAnswer(question: number, correctChoice: string): void {
+    this.courseContent.answers[question].choices[parseInt(correctChoice)].isCorrect = true;
+    console.log(this.courseContent.answers[question]);
   }
 
   public async submitCourse() {

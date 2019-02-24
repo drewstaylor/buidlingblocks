@@ -16,6 +16,16 @@ declare let window: any;
 })
 export class StudentTakingCourseComponent implements OnInit {
 
+  public readonly ANSWER_TYPE_MULTIPLE_CHOICE: number = 0;
+  public readonly ANSWER_TYPE_TRUE_FALSE: number = 1;
+  public readonly ANSWER_TYPE_MATH: number = 2;
+  public readonly AGE_GROUP_PRESCHOOL: number = 0;
+  public readonly AGE_GROUP_ELEMENTARY: number = 1;
+  public readonly AGE_GROUP_SECONDARY: number = 2;
+  public readonly COURSE_TYPE_MATH: number = 0;
+  public readonly COURSE_TYPE_READING: number = 1;
+  public readonly COURSE_TYPE_SCIENCE: number = 2;
+
   public courseData: any = {
     name: null,
     ageGroup: null,

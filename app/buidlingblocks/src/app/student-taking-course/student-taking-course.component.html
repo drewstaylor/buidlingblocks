@@ -4,16 +4,17 @@
     <h1 *ngIf="courseData">{{ courseData.name }}</h1>
     <h5>
       Suggested Age Group: 
-      <span *ngIf="courseData.ageGroup == 0">Preschool</span>
-      <span *ngIf="courseData.ageGroup == 1">Primary School</span>
-      <span *ngIf="courseData.ageGroup == 2">Secondary School</span>
+      <span *ngIf="courseData.ageGroup == AGE_GROUP_PRESCHOOL">Preschool</span>
+      <span *ngIf="courseData.ageGroup == AGE_GROUP_ELEMENTARY">Primary School</span>
+      <span *ngIf="courseData.ageGroup == AGE_GROUP_SECONDARY">Secondary School</span>
+      <span *ngIf="courseData.ageGroup > AGE_GROUP_SECONDARY">Adult</span>
     </h5>
     <div>
       <h5>
         Category: 
-        <span *ngIf="courseData.courseType == 0">MATH</span>
-        <span *ngIf="courseData.courseType == 1">READING</span>
-        <span *ngIf="courseData.courseType == 2">SCIENCE</span>
+        <span *ngIf="courseData.courseType == COURSE_TYPE_MATH">MATH</span>
+        <span *ngIf="courseData.courseType == COURSE_TYPE_READING">READING</span>
+        <span *ngIf="courseData.courseType == COURSE_TYPE_SCIENCE">SCIENCE</span>
       </h5>
     </div>
     <div class="container" *ngFor="let step of courseMaterial.steps; index as i;">
@@ -36,11 +37,6 @@
 <div class="content-wrapper container-fluid">
   <h3>Write your answers to the course review questions in the fields below:</h3>
   <div class="container row" *ngFor="let answer of courseMaterial.answers; index as i;" style="margin-bottom:2.5em;">
-    <!--
-    <option value="0">Multiple Choice</option>
-    <option value="1">True or False</option>
-    <option value="3">Mathematical / Numerical</option>
-    -->
     <!-- Multiple Choice -->
     <p>Question #{{ i + 1 }}:</p>
     <input
@@ -50,7 +46,7 @@
       class="form-control" 
       placeholder="Answer {{i + 1}}"
       maxlength="1"
-      *ngIf="answer.type == 0"
+      *ngIf="answer.type == ANSWER_TYPE_MULTIPLE_CHOICE"
       required
     >
 
@@ -59,7 +55,7 @@
       [(ngModel)]="courseMaterial.studentAnswers[i]"
       name="student-answers-{{i}}"
       class="form-control" 
-      *ngIf="answer.type == 1"
+      *ngIf="answer.type == ANSWER_TYPE_TRUE_FALSE"
     >
       <option value="-1">Select an answer</option>
       <option value="1">True</option>
@@ -73,7 +69,7 @@
       placeholder="Answer {{i + 1}}"
       name="student-answers-{{i}}"
       class="form-control" 
-      *ngIf="answer.type == 3"
+      *ngIf="answer.type >= ANSWER_TYPE_MATH"
       required
     >
   </div>

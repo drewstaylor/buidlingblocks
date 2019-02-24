@@ -27,12 +27,13 @@
             <p class="suggested-age">
               <select 
                 name="suggested_age"
+                class="form-control"
                 [(ngModel)]="courseContent.ageGroup"
               >
                 <option value="-1">Select an appropriate learning age</option>
-                <option value="0">Early childhood education</option>
-                <option value="1">Primary / elementary school</option>
-                <option value="2">Secondary school</option>
+                <option value="{{AGE_GROUP_PRESCHOOL}}">Early childhood education</option>
+                <option value="{{AGE_GROUP_ELEMENTARY}}">Primary / elementary school</option>
+                <option value="{{AGE_GROUP_SECONDARY}}">Secondary school</option>
               </select>
             </p>
           </div>
@@ -40,12 +41,13 @@
               <p class="course-type">
                 <select 
                   name="course_type"
+                  class="form-control"
                   [(ngModel)]="courseContent.courseType"
                 >
                   <option value="-1">Select a course category</option>
-                  <option value="0">Math</option>
-                  <option value="1">Reading</option>
-                  <option value="2">Science</option>
+                  <option value="{{COURSE_TYPE_MATH}}">Math</option>
+                  <option value={{COURSE_TYPE_READING}}>Reading</option>
+                  <option value="{{COURSE_TYPE_SCIENCE}}">Science</option>
                 </select>
               </p>
             </div>
@@ -106,34 +108,84 @@
             <p>
                 <label for="total-questions-{{i}}">Total number of questions:</label>
                 <input 
-                  class="questions-total"
+                  class="questions-total form-control"
                   type="number" 
                   min="1" 
                   name="total-questions-{{i}}"
                   [(ngModel)]="courseContent.exams[i].totalQuestions"
-                  (change)="arrayMaker(courseContent.exams[i].totalQuestions)"
+                  (change)="arrayMaker(courseContent.exams[i].totalQuestions, 'examQuestions', null)"
                 >
             </p>
             <div class="col-sm label">
-              <div *ngFor="let answer of courseContent.answers; index as j;">
-                <p>
+              <div *ngFor="let answer of courseContent.answers; index as j;" style="margin-bottom:0.5em;">
                   <select 
                     name="answer-type-{{j}}"
-                    [(ngModel)]="answer.type"
+                    [(ngModel)]="courseContent.answers[j].type"
+                    class="form-control"
                   >
                     <option value="-1">Select an answer type</option>
-                    <option value="0">Multiple Choice</option>
-                    <option value="1">True or False</option>
-                    <option value="3">Mathematical / Numerical</option>
+                    <option value="{{ANSWER_TYPE_MULTIPLE_CHOICE}}">Multiple Choice</option>
+                    <option value="{{ANSWER_TYPE_TRUE_FALSE}}">True or False</option>
+                    <option value="{{ANSWER_TYPE_MATH}}">Mathematical / Numerical</option>
                   </select>
-                  <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+                  <!-- Multiple Choice -->
+                  <div *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MULTIPLE_CHOICE">
+                        <span>Number of choices:</span>
+                        <input 
+                          type="number"
+                          [(ngModel)]="courseContent.answers[j].totalOptions"
+                          (change)="arrayMaker(courseContent.answers[j].totalOptions, 'multipleChoiceOptions', j)"
+                          min="1"
+                          class="questions-total form-control"
+                          name="answer-{{j}}-number-of-choices"
+                        >
+                      
+                      <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
+                        <p *ngFor="let choice of courseContent.answers[j].choices; index as k">
+                          <span>
+                            <label for="answer-{{j}}-number-of-choices-choice-{{k}}">Multiple choice option #{{k + 1}}:</label>
+                          </span>
+                          <input 
+                            class="form-control"
+                            type="text"
+                            [(ngModel)]="courseContent.answers[j].choices[k].value"
+                            name="answer-{{j}}-number-of-choices-choice-{{k}}"
+                          >
+                        </p>
+                      </div>
+                      <!-- Choose Correct Answer -->
+                      <div>
+                        <span>Choose the correct answer</span>
+                        <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
+                          <select
+                            class="form-control"
+                            name="answer-{{j}}-correct-choice"
+                            (change)="setCorrectMultipleChoiceAnswer(j, $event.target.value)"
+                          >
+                            <option value="{{l}}" *ngFor="let choice of courseContent.answers[j].choices; index as l">Option {{l + 1}}: {{ courseContent.answers[j].choices[l].value }}</option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  <!-- True or False -->
+                  <select       
+                    [(ngModel)]="courseContent.answers[j].value"
+                    name="exams-answers-{{j}}"
+                    class="form-control"
+                    *ngIf="courseContent.answers[j].type == ANSWER_TYPE_TRUE_FALSE"
+                  >
+                    <option value="-1" selected>Select an answer</option>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                  </select>
+                  <!-- Math -->
                   <input 
-                    type="text"
+                    type="number"
                     placeholder="Correct answer for question {{j + 1}}"
                     [(ngModel)]="answer.value"
                     name="exams-answers-{{j}}"
+                    *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MATH"
                   >
-                </p>
               </div>
             </div>
           </div>
