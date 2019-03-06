@@ -5,194 +5,206 @@
       <div class="content-wrapper">
         <form
           name="course_form"
-          (ngSubmit)="submitCourse();"
         >
-          <div class="row file-label">
-            <h1>
-              <strong>It's Learning Time!</strong>
-            </h1>
-            <p class="descr">
-              Use the following form to guide your students on their voyage of learning, and to plan your lesson. 
-            </p>
-          </div>
-          <div class="row course-title-label">
-            <input 
-              [(ngModel)]="courseContent.courseTitle"
-              type="text"
-              name="course_title"
-              placeholder="My awesome course title"
-            >
-          </div>
-          <div class="row suggested-age-label">
-            <p class="suggested-age">
-              <select 
-                name="suggested_age"
-                class="form-control"
-                [(ngModel)]="courseContent.ageGroup"
+
+          <!-- Step 1 -->
+          <div class="container" *ngIf="currentStep === 0">
+            <div class="row file-label">
+              <h1>
+                <strong>It's Learning Time!</strong>
+              </h1>
+            </div>
+            <div class="row">
+              <p class="descr">Use the following form to guide your students on their voyage of learning, and to plan your lesson.</p>
+            </div>
+            <div class="row course-title-label">
+              <input 
+                [(ngModel)]="courseContent.courseTitle"
+                type="text"
+                name="course_title"
+                placeholder="My awesome course title"
               >
-                <option value="-1">Select an appropriate learning age</option>
-                <option value="{{AGE_GROUP_PRESCHOOL}}">Early childhood education</option>
-                <option value="{{AGE_GROUP_ELEMENTARY}}">Primary / elementary school</option>
-                <option value="{{AGE_GROUP_SECONDARY}}">Secondary school</option>
-              </select>
-            </p>
-          </div>
-          <div class="row course-type-label">
-              <p class="course-type">
+            </div>
+            <div class="row suggested-age-label">
+              <p class="suggested-age">
                 <select 
-                  name="course_type"
+                  name="suggested_age"
                   class="form-control"
-                  [(ngModel)]="courseContent.courseType"
+                  [(ngModel)]="courseContent.ageGroup"
                 >
-                  <option value="-1">Select a course category</option>
-                  <option value="{{COURSE_TYPE_MATH}}">Math</option>
-                  <option value={{COURSE_TYPE_READING}}>Reading</option>
-                  <option value="{{COURSE_TYPE_SCIENCE}}">Science</option>
+                  <option value="-1">Select an appropriate learning age</option>
+                  <option value="{{AGE_GROUP_PRESCHOOL}}">Early childhood education</option>
+                  <option value="{{AGE_GROUP_ELEMENTARY}}">Primary / elementary school</option>
+                  <option value="{{AGE_GROUP_SECONDARY}}">Secondary school</option>
                 </select>
               </p>
             </div>
-          <div class="row step-label">
-            <h3>
-              <strong>Add one or more steps to your lesson plan:</strong>
-            </h3>
+            <div class="row course-type-label">
+                <p class="course-type">
+                  <select 
+                    name="course_type"
+                    class="form-control"
+                    [(ngModel)]="courseContent.courseType"
+                  >
+                    <option value="-1">Select a course category</option>
+                    <option value="{{COURSE_TYPE_MATH}}">Math</option>
+                    <option value={{COURSE_TYPE_READING}}>Reading</option>
+                    <option value="{{COURSE_TYPE_SCIENCE}}">Science</option>
+                  </select>
+                </p>
+              </div>
           </div>
-          <div class="row" *ngFor="let step of courseContent.steps; index as i;">
-            <div class="row container">
-                <span>
-                  <strong>Step {{i + 1}}:</strong>
-                </span>
+
+          <!-- Step 2 -->
+          <div class="container" *ngIf="currentStep === 1">
+            <div class="row step-label">
+              <h3>
+                <strong>Add one or more steps to your lesson plan:</strong>
+              </h3>
             </div>
-            <input
-              [(ngModel)]="courseContent.steps[i].title"
-              type="text"
-              name="step-title-{{i}}"
-              class="form-control" 
-              placeholder="Lesson title"
-              required
-            >
-            <textarea
-              [(ngModel)]="courseContent.steps[i].body"
-              maxlength="1000"
-              name="step-body-{{i}}"
-              placeholder="My awesome course lesson plan..."
-            >
-            </textarea>
-            <input 
-              class="file" 
-              type="file" 
-              name="step-file-{{i}}" 
-              (change)="fileChangedCourseAsset($event,i)"
-            >
-          </div>
-          <div class="row controls">
-            <div class="inner-controls">
-              <span class="add add-step" alt="Add a new step to your lesson plan!" (click)="addStep();">+</span>
-              <span class="remove remove-step" alt="Oops! Remove the last step added to your lesson plan!" (click)="removeStep();">-</span>
-            </div>
-          </div>
-          <div class="row file-label">
-            <h3>
-              <strong>Add a course review exam to your lesson plan:</strong>
-            </h3>
-          </div>
-          <div class="col-sm exams files file" *ngFor="let exam of courseContent.exams; index as i;">
-            <p>
-              <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+            <div class="row" *ngFor="let step of courseContent.steps; index as i;">
+              <div class="row container">
+                  <span>
+                    <strong>Step {{i + 1}}:</strong>
+                  </span>
+              </div>
+              <input
+                [(ngModel)]="courseContent.steps[i].title"
+                type="text"
+                name="step-title-{{i}}"
+                class="form-control" 
+                placeholder="Lesson title"
+                required
+              >
+              <textarea
+                [(ngModel)]="courseContent.steps[i].body"
+                maxlength="1000"
+                name="step-body-{{i}}"
+                placeholder="My awesome course lesson plan..."
+              >
+              </textarea>
               <input 
                 class="file" 
                 type="file" 
-                name="exam-file-{{i}}" 
-                (change)="fileChanged($event,i)"
+                name="step-file-{{i}}" 
+                (change)="fileChangedCourseAsset($event,i)"
               >
-            </p>
-            <p>
-                <label for="total-questions-{{i}}">Total number of questions:</label>
-                <input 
-                  class="questions-total form-control"
-                  type="number" 
-                  min="1" 
-                  name="total-questions-{{i}}"
-                  [(ngModel)]="courseContent.exams[i].totalQuestions"
-                  (change)="arrayMaker(courseContent.exams[i].totalQuestions, 'examQuestions', null)"
-                >
-            </p>
-            <div class="col-sm label">
-              <div *ngFor="let answer of courseContent.answers; index as j;" style="margin-bottom:2.5em;">
-                  <p>
-                    <strong>Question #{{j + 1}}:</strong>
-                  </p>
-                  <select 
-                    name="answer-type-{{j}}"
-                    [(ngModel)]="courseContent.answers[j].type"
-                    class="form-control"
-                    (change)="answerTypeSelected(j, $event.target.value)"
-                  >
-                    <option value="-1">Select an answer type</option>
-                    <option value="{{ANSWER_TYPE_MULTIPLE_CHOICE}}">Multiple Choice</option>
-                    <option value="{{ANSWER_TYPE_TRUE_FALSE}}">True or False</option>
-                    <option value="{{ANSWER_TYPE_MATH}}">Mathematical / Numerical</option>
-                  </select>
-                  <!-- Multiple Choice -->
-                  <div *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MULTIPLE_CHOICE">
-                        <span>Number of choices:</span>
-                        <input 
-                          type="number"
-                          [(ngModel)]="courseContent.answers[j].totalOptions"
-                          (change)="arrayMaker(courseContent.answers[j].totalOptions, 'multipleChoiceOptions', j)"
-                          min="1"
-                          class="questions-total form-control"
-                          name="answer-{{j}}-number-of-choices"
-                        >
-                      
-                      <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
-                        <p *ngFor="let choice of courseContent.answers[j].choices; index as k">
-                          <span>
-                            <label for="answer-{{j}}-number-of-choices-choice-{{k}}">Multiple choice option #{{k + 1}}:</label>
-                          </span>
-                          <input 
-                            class="form-control"
-                            type="text"
-                            [(ngModel)]="courseContent.answers[j].choices[k].value"
-                            name="answer-{{j}}-number-of-choices-choice-{{k}}"
-                          >
-                        </p>
-                      </div>
-                      <!-- Choose Correct Answer -->
-                      <div>
-                        <span>Choose the correct answer</span>
-                        <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
-                          <select
-                            class="form-control"
-                            name="answer-{{j}}-correct-choice"
-                            (change)="setCorrectMultipleChoiceAnswer(j, $event.target.value)"
-                          >
-                            <option value="{{l}}" *ngFor="let choice of courseContent.answers[j].choices; index as l">Option {{l + 1}}: {{ courseContent.answers[j].choices[l].value }}</option>
-                          </select>
-                        </div>
-                      </div>
-                  </div>
-                  <!-- True or False -->
-                  <select       
-                    [(ngModel)]="courseContent.answers[j].value"
-                    name="exams-answers-{{j}}"
-                    class="form-control"
-                    *ngIf="courseContent.answers[j].type == ANSWER_TYPE_TRUE_FALSE"
-                  >
-                    <option value="-1">Select an answer</option>
-                    <option value="1">True</option>
-                    <option value="0">False</option>
-                  </select>
-                  <!-- Math -->
-                  <input 
-                    type="number"
-                    placeholder="Correct answer for question {{j + 1}}"
-                    [(ngModel)]="answer.value"
-                    name="exams-answers-{{j}}"
-                    *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MATH"
-                  >
+            </div>
+            <div class="row controls">
+              <div class="inner-controls">
+                <span class="add add-step" alt="Add a new step to your lesson plan!" (click)="addStep();">+</span>
+                <span class="remove remove-step" alt="Oops! Remove the last step added to your lesson plan!" (click)="removeStep();">-</span>
               </div>
             </div>
           </div>
+          
+          <!-- Step 3 -->
+          <div class="container" *ngIf="currentStep === 2">
+              <div class="row file-label">
+                  <h3>
+                    <strong>Add a course review exam to your lesson plan:</strong>
+                  </h3>
+                </div>
+                <div class="row exams files file" *ngFor="let exam of courseContent.exams; index as i;">
+                  <p>
+                    <label for="exam-file-{{i}}">Upload your course exam as a file (PDF, TXT, DOC)</label>
+                    <input 
+                      class="file" 
+                      type="file" 
+                      name="exam-file-{{i}}" 
+                      (change)="fileChanged($event,i)"
+                    >
+                  </p>
+                  <p>
+                      <label for="total-questions-{{i}}">Total number of questions:</label>
+                      <input 
+                        class="questions-total form-control"
+                        type="number" 
+                        min="1" 
+                        name="total-questions-{{i}}"
+                        [(ngModel)]="courseContent.exams[i].totalQuestions"
+                        (change)="arrayMaker(courseContent.exams[i].totalQuestions, 'examQuestions', null)"
+                      >
+                  </p>
+                  <div class="label">
+                    <div *ngFor="let answer of courseContent.answers; index as j;" style="margin-bottom:2.5em;">
+                        <p>
+                          <strong>Question #{{j + 1}}:</strong>
+                        </p>
+                        <select 
+                          name="answer-type-{{j}}"
+                          [(ngModel)]="courseContent.answers[j].type"
+                          class="form-control"
+                          (change)="answerTypeSelected(j, $event.target.value)"
+                        >
+                          <option value="-1">Select an answer type</option>
+                          <option value="{{ANSWER_TYPE_MULTIPLE_CHOICE}}">Multiple Choice</option>
+                          <option value="{{ANSWER_TYPE_TRUE_FALSE}}">True or False</option>
+                          <option value="{{ANSWER_TYPE_MATH}}">Mathematical / Numerical</option>
+                        </select>
+                        <!-- Multiple Choice -->
+                        <div *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MULTIPLE_CHOICE">
+                              <span>Number of choices:</span>
+                              <input 
+                                type="number"
+                                [(ngModel)]="courseContent.answers[j].totalOptions"
+                                (change)="arrayMaker(courseContent.answers[j].totalOptions, 'multipleChoiceOptions', j)"
+                                min="1"
+                                class="questions-total form-control"
+                                name="answer-{{j}}-number-of-choices"
+                              >
+                            
+                            <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
+                              <p *ngFor="let choice of courseContent.answers[j].choices; index as k">
+                                <span>
+                                  <label for="answer-{{j}}-number-of-choices-choice-{{k}}">Multiple choice option #{{k + 1}}:</label>
+                                </span>
+                                <input 
+                                  class="form-control"
+                                  type="text"
+                                  [(ngModel)]="courseContent.answers[j].choices[k].value"
+                                  name="answer-{{j}}-number-of-choices-choice-{{k}}"
+                                >
+                              </p>
+                            </div>
+                            <!-- Choose Correct Answer -->
+                            <div>
+                              <span>Choose the correct answer</span>
+                              <div *ngIf="courseContent.answers[j].choices && courseContent.answers[j].choices !== null">
+                                <select
+                                  class="form-control"
+                                  name="answer-{{j}}-correct-choice"
+                                  (change)="setCorrectMultipleChoiceAnswer(j, $event.target.value)"
+                                >
+                                  <option value="{{l}}" *ngFor="let choice of courseContent.answers[j].choices; index as l">Option {{l + 1}}: {{ courseContent.answers[j].choices[l].value }}</option>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+                        <!-- True or False -->
+                        <select       
+                          [(ngModel)]="courseContent.answers[j].value"
+                          name="exams-answers-{{j}}"
+                          class="form-control"
+                          *ngIf="courseContent.answers[j].type == ANSWER_TYPE_TRUE_FALSE"
+                        >
+                          <option value="-1">Select an answer</option>
+                          <option value="1">True</option>
+                          <option value="0">False</option>
+                        </select>
+                        <!-- Math -->
+                        <input 
+                          type="number"
+                          placeholder="Correct answer for question {{j + 1}}"
+                          [(ngModel)]="answer.value"
+                          name="exams-answers-{{j}}"
+                          *ngIf="courseContent.answers[j].type == ANSWER_TYPE_MATH"
+                        >
+                    </div>
+                  </div>
+                </div>
+          </div>
+
           <!--
           <div class="row controls">
             <div class="inner-controls">
@@ -201,8 +213,20 @@
             </div>
           </div>
           -->
+
+          <!-- Step 3 -->
+          <div class="row container" *ngIf="currentStep === 3">
+              <button 
+                class="btn btn-primary" 
+                (click)="submitCourse();" 
+                [disabled]="!courseContent.courseTitle || courseContent.courseType == -1 || courseContent.ageGroup == -1 || courseContent.answers.length === 0 || !courseContent.exams[0].file"
+              >Submit New Course</button>
+          </div>
           <div class="row">
-            <button type="submit" class="btn btn-primary">Create New Course!</button>
+            <div class="container-fluid">
+                <button class="btn btn-primary view-btn" *ngIf="currentStep > 0" (click)="loadView(currentStep - 1);">Back</button>
+                <button class="btn btn-primary view-btn" *ngIf="currentStep < 3" (click)="loadView(currentStep + 1);">Next</button>
+            </div>
           </div>
         </form>
       </div>

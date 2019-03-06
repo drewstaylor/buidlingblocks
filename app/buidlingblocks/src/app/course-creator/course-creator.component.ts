@@ -30,6 +30,8 @@ export class CourseCreatorComponent implements OnInit {
   public readonly COURSE_TYPE_READING: number = 1;
   public readonly COURSE_TYPE_SCIENCE: number = 2;
 
+  public currentStep: number = 0;
+
   public courseContent = {
     courseTitle: null,
     courseType: -1,
@@ -63,6 +65,10 @@ export class CourseCreatorComponent implements OnInit {
     this.contractService.bootstrap();
     this.ipfsService.bootstrap();
     console.log('ipfs =>', this.ipfsService.ipfs);
+  }
+
+  public loadView(step: number): void {
+    this.currentStep = step;
   }
 
   public addStep(): void {
