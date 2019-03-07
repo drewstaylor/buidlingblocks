@@ -26,6 +26,8 @@ export class StudentTakingCourseComponent implements OnInit {
   public readonly COURSE_TYPE_READING: number = 1;
   public readonly COURSE_TYPE_SCIENCE: number = 2;
 
+  public currentStep: number = 0;
+
   public courseData: any = {
     name: null,
     ageGroup: null,
@@ -160,6 +162,10 @@ export class StudentTakingCourseComponent implements OnInit {
         behavior: "smooth" 
       });
     }, 0);
+  }
+
+  public loadView(step: number): void {
+    this.currentStep = step;
   }
 
   private getSafeFilename(filename: string) {
