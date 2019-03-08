@@ -1,0 +1,46 @@
+.course-step {
+    max-width: 98%;
+}
+
+.course-step:not(.active) {
+    display: none;
+}
+
+.course-step.active {
+    display: inline-block;
+}
+
+a.exam-href {
+    color: #007bff;
+    cursor: pointer;
+}
+
+a.exam-href:hover {
+    color: #0056b3;
+}
+
+.controls {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+button {
+    width: 90%;
+    max-width: 250px;
+}
+
+button.view-btn {
+    max-width: 150px;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-right: 2.5rem;
+}
+
+@media only screen and (max-width: 667px) {
+    button.view-btn {
+        max-width: 100px;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}

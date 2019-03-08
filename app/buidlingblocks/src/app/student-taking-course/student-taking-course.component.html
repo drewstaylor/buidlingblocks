@@ -17,102 +17,117 @@
         <span *ngIf="courseData.courseType == COURSE_TYPE_SCIENCE">SCIENCE</span>
       </h5>
     </div>
-    <div class="container" *ngFor="let step of courseMaterial.steps; index as i;">
-      <h5>{{ step.title }}:</h5>
-      <p>{{ step.body }}</p>
-      <div class="container" *ngIf="step.img">
-          <img [src]="step.img">
+    <div class="row" *ngIf="courseMaterial.steps">
+      <div class="container" *ngFor="let step of courseMaterial.steps; index as i;">
+          <div [ngClass]="{'active': currentStep == i, 'course-step': true}">
+            <h5>{{ step.title }}:</h5>
+            <p>{{ step.body }}</p>
+            <div class="img-container" *ngIf="step.img">
+                <img class="img-fluid" [src]="step.img">
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- Course Review Input -->
+<div class="container container-fluid">
+  <div class="container container-fluid" *ngIf="courseMaterial.steps">
+    <div *ngIf="currentStep === courseMaterial.steps.length">
+      <div>
+        <h3>Course Review:</h3>
+      </div>
+      <div *ngFor="let exam of courseMaterial.exams; index as i;" style="margin-bottom:2.5em;">
+        <a class="exam-href" *ngIf="exam.file" (click)="loadExam(i);">Download Course Review</a>
+      </div>
+      <h3>Write your answers to the course review questions in the fields below:</h3>
+      <div *ngFor="let answer of courseMaterial.answers; index as i;" style="margin-bottom:2.5em;">
+        <!-- Multiple Choice -->
+        <p>Question #{{ i + 1 }}:</p>
+        <input
+          [(ngModel)]="courseMaterial.studentAnswers[i]"
+          type="text"
+          name="student-answers-{{i}}"
+          class="form-control" 
+          placeholder="Answer {{i + 1}}"
+          maxlength="1"
+          *ngIf="answer.type == ANSWER_TYPE_MULTIPLE_CHOICE"
+          required
+        >
+  
+        <!-- True or False -->
+        <select       
+          [(ngModel)]="courseMaterial.studentAnswers[i]"
+          name="student-answers-{{i}}"
+          class="form-control" 
+          *ngIf="answer.type == ANSWER_TYPE_TRUE_FALSE"
+        >
+          <option value="-1">Select an answer</option>
+          <option value="1">True</option>
+          <option value="0">False</option>
+        </select>
+  
+        <!-- Mathematical / Numerical -->
+        <input
+          [(ngModel)]="courseMaterial.studentAnswers[i]"
+          type="number"
+          placeholder="Answer {{i + 1}}"
+          name="student-answers-{{i}}"
+          class="form-control" 
+          *ngIf="answer.type >= ANSWER_TYPE_MATH"
+          required
+        >
+      </div>
+  
+      <!-- Check Test Results (Dry Run) -->
+      <div class="content-wrapper">
+        <h3>Check Test Results:</h3>
+        <p>
+          <button class="btn btn-primary" (click)="checkTestResults();">Go!</button>
+        </p>
+      </div>
+      
+      <!-- Show Unverified Test Results -->
+      <div id="unverified-results" class="content-wrapper" *ngIf="courseMaterial.unverifiedTestScores">
+        <h5>Your Test Scores:</h5>
+        <div *ngFor="let score of courseMaterial.unverifiedTestScores; index as i;" style="margin-bottom:0.5em;">
+          <p>
+            Question {{ i + 1 }}:
+            <span *ngIf="score == 0"> Incorrect</span>
+            <span *ngIf="score == 1"> Correct</span>
+          </p>
+        </div>
+      </div>
+      
+      <!-- Show Unverified Test Grading -->
+      <div class="content-wrapper" *ngIf="courseMaterial.unsubmittedTestGrade">
+        <h5>Grading:</h5>
+        <div style="margin-bottom:2.5em;">
+          <div class="unsubmitted-grade">
+            <p>
+              <strong>Score: </strong>{{ courseMaterial.unsubmittedTestGrade.result }}
+            </p>
+          </div>
+          <div class="unsubmitted-grade">
+            <p>
+              <strong>Result: </strong>{{ courseMaterial.unsubmittedTestGrade.totalCorrectAnswers }} / {{ courseMaterial.unsubmittedTestGrade.totalQuestions }}
+            </p>
+          </div>
+          <div class="unsubmitted-grade">
+            <p>
+              <strong>Grade: </strong>{{ courseMaterial.unsubmittedTestGrade.grade }} - {{ courseMaterial.unsubmittedTestGrade.remark }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="container">
-      <h3>Course Review:</h3>
-    </div>
-    <div class="container" *ngFor="let exam of courseMaterial.exams; index as i;" style="margin-bottom:2.5em;">
-      <a [href]="exam.file" download="{{ courseData.safeFilename }}" *ngIf="exam.file">Download Course Review</a>
-    </div>
   </div>
 </div>
 
-<!-- Course Review Input -->
-<div class="content-wrapper container-fluid">
-  <h3>Write your answers to the course review questions in the fields below:</h3>
-  <div class="container row" *ngFor="let answer of courseMaterial.answers; index as i;" style="margin-bottom:2.5em;">
-    <!-- Multiple Choice -->
-    <p>Question #{{ i + 1 }}:</p>
-    <input
-      [(ngModel)]="courseMaterial.studentAnswers[i]"
-      type="text"
-      name="student-answers-{{i}}"
-      class="form-control" 
-      placeholder="Answer {{i + 1}}"
-      maxlength="1"
-      *ngIf="answer.type == ANSWER_TYPE_MULTIPLE_CHOICE"
-      required
-    >
-
-    <!-- True or False -->
-    <select       
-      [(ngModel)]="courseMaterial.studentAnswers[i]"
-      name="student-answers-{{i}}"
-      class="form-control" 
-      *ngIf="answer.type == ANSWER_TYPE_TRUE_FALSE"
-    >
-      <option value="-1">Select an answer</option>
-      <option value="1">True</option>
-      <option value="0">False</option>
-    </select>
-
-    <!-- Mathematical / Numerical -->
-    <input
-      [(ngModel)]="courseMaterial.studentAnswers[i]"
-      type="number"
-      placeholder="Answer {{i + 1}}"
-      name="student-answers-{{i}}"
-      class="form-control" 
-      *ngIf="answer.type >= ANSWER_TYPE_MATH"
-      required
-    >
-  </div>
-</div>
-
-<!-- Check Test Results (Dry Run) -->
-<div class="content-wrapper container-fluid">
-  <h3>Check Test Results:</h3>
-  <p>
-    <button class="btn btn-primary" (click)="checkTestResults();">Go!</button>
-  </p>
-</div>
-
-<!-- Show Unverified Test Results -->
-<div id="unverified-results" class="content-wrapper container-fluid" *ngIf="courseMaterial.unverifiedTestScores">
-  <h5>Your Test Scores:</h5>
-  <div *ngFor="let score of courseMaterial.unverifiedTestScores; index as i;" style="margin-bottom:0.5em;">
-    <p>
-      Question {{ i + 1 }}:
-      <span *ngIf="score == 0"> Incorrect</span>
-      <span *ngIf="score == 1"> Correct</span>
-    </p>
-  </div>
-</div>
-
-<!-- Show Unverified Test Grading -->
-<div class="content-wrapper container-fluid" *ngIf="courseMaterial.unsubmittedTestGrade">
-  <h5>Grading:</h5>
-  <div style="margin-bottom:2.5em;">
-    <div class="unsubmitted-grade">
-      <p>
-        <strong>Score: </strong>{{ courseMaterial.unsubmittedTestGrade.result }}
-      </p>
-    </div>
-    <div class="unsubmitted-grade">
-      <p>
-        <strong>Result: </strong>{{ courseMaterial.unsubmittedTestGrade.totalCorrectAnswers }} / {{ courseMaterial.unsubmittedTestGrade.totalQuestions }}
-      </p>
-    </div>
-    <div class="unsubmitted-grade">
-      <p>
-        <strong>Grade: </strong>{{ courseMaterial.unsubmittedTestGrade.grade }} - {{ courseMaterial.unsubmittedTestGrade.remark }}
-      </p>
-    </div>
+<!-- Navigate View Steps -->
+<div class="container controls" *ngIf="courseMaterial.steps">
+  <div class="container-fluid">
+      <button class="btn btn-primary view-btn" *ngIf="currentStep > 0" (click)="loadView(currentStep - 1);">Back</button>
+      <button class="btn btn-primary view-btn" *ngIf="currentStep < courseMaterial.steps.length" (click)="loadView(currentStep + 1);">Next</button>
   </div>
 </div>

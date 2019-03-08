@@ -132,6 +132,7 @@ export class StudentTakingCourseComponent implements OnInit {
     url = window.URL.createObjectURL(blob);
     window.setTimeout(() => {
       this.courseMaterial.exams[index].file = this.getSantizeUrl(url);
+      this.courseMaterial.exams[index].rawFileUrl = url;
       this.changeDetector.detectChanges();
     }, 0);
   }
@@ -166,6 +167,28 @@ export class StudentTakingCourseComponent implements OnInit {
 
   public loadView(step: number): void {
     this.currentStep = step;
+  }
+
+  /**
+   * Loads a PDF blob from the exams array into a new browswer tab
+   * @param index {Number}: the index of the exam to load in a new tab
+   */
+  public loadExam(index: number): void {
+    let pdf = null;
+    if (this.courseMaterial.exams) {
+      if (this.courseMaterial.exams[index]) {
+        if (this.courseMaterial.exams[index].hasOwnProperty('rawFileUrl')) {
+          pdf = this.courseMaterial.exams[index].rawFileUrl;
+        }
+      }
+    }
+    if (pdf) {
+      let newWindow = window.open('/')
+      newWindow.onload = () => {
+        newWindow.location = pdf;
+      };
+      console.log(pdf);
+    }
   }
 
   private getSafeFilename(filename: string) {
